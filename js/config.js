@@ -63,7 +63,7 @@ const CONFIG = {
     {
       id: "perfect-diet",
       title: "Perfect Diet",
-      description: "AI-powered personalized nutrition and meal planning app for optimal health and fitness goals.",
+      description: "Toxin-focused nutrition database with AI chat and diet designer. Analyzes food safety and natural compounds for optimal health.",
       image: "/images/projects/perfect-diet.jpg",
       link: "https://perfectdiet.vercel.app/",
       status: "active",
