@@ -787,14 +787,30 @@ body {
   }
 }
 
-/* Dove Image */
+/* Dove Image - Mobile first */
 .dove-image {
   position: fixed;
-  top: 14%;
+  top: 3px;
   left: 40%;
   transform: translateX(-50%);
-  width: 60px;
+  width: 50px;
   height: auto;
   z-index: 10;
   opacity: 0.7;
+}
+
+/* Desktop viewport adjustments */
+@media (min-width: 1200px) {
+  .dove-image {
+    top: 14%;
+    width: 60px;
+  }
+}
+
+/* Force mobile styles for all smaller screens */
+@media (max-width: 1199px) {
+  .dove-image {
+    top: 3px !important;
+    width: 50px !important;
+  }
 }
