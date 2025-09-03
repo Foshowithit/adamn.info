@@ -292,8 +292,10 @@ class AdamHub {
         <div class="link-icon" style="${iconStyle}">
           <i data-lucide="${org.icon}" style="color: ${org.color}"></i>
         </div>
-        <div class="link-title">${org.title}</div>
-        <div class="link-description">${org.description}</div>
+        <div class="link-content">
+          <div class="link-title">${org.title}</div>
+          <div class="link-description">${org.description}</div>
+        </div>
         <i data-lucide="external-link" class="external-icon"></i>
       </a>
     `;

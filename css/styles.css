@@ -460,12 +460,16 @@ body {
   flex-shrink: 0;
 }
 
+.link-content {
+  flex: 1;
+  min-width: 0;
+}
+
 .link-title {
   font-weight: var(--font-weight-semibold);
   color: var(--color-white);
   transition: color var(--transition-fast);
-  flex: 1;
-  min-width: 0;
+  margin-bottom: var(--spacing-xs);
 }
 
 .card:hover .link-title {
@@ -781,4 +785,16 @@ body {
     flex-direction: column;
     gap: var(--spacing-sm);
   }
+}
+
+/* Dove Image */
+.dove-image {
+  position: absolute;
+  top: 3%;
+  left: 40%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: auto;
+  z-index: 2;
+  opacity: 0.7;
 }
