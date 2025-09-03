@@ -59,6 +59,16 @@ const CONFIG = {
       status: "active",
       tags: ["Faith", "Prophecy", "Analysis"],
       featured: true
+    },
+    {
+      id: "perfect-diet",
+      title: "Perfect Diet",
+      description: "AI-powered personalized nutrition and meal planning app for optimal health and fitness goals.",
+      image: "/images/projects/perfect-diet.jpg",
+      link: "https://perfectdiet.vercel.app/",
+      status: "active",
+      tags: ["Health", "AI", "Nutrition"],
+      featured: true
     }
   ],
   
