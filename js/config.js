@@ -53,11 +53,11 @@ const CONFIG = {
     {
       id: "nineveh90",
       title: "Nineveh90",
-      description: "Biblical prophecy tracking and theological analysis of current world events.",
+      description: "Free 90-day Catholic men's spiritual formation program with daily disciplines, community support, and spiritual warfare focus.",
       image: "/images/projects/nineveh90.jpg",
       link: "https://nineveh90.website/",
       status: "active",
-      tags: ["Faith", "Prophecy", "Analysis"],
+      tags: ["Faith", "Catholic", "Men's Ministry"],
       featured: true
     },
     {
