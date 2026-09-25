@@ -2,293 +2,502 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Adam Normandin — Projects &amp; Links</title>
-<meta name="description" content="Adam Normandin — AI builder and DeFi advisor. Real-time 3D projects, certifications, and links.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Adam Normandin — links, real-time 3D &amp; GPU work</title>
+<meta name="description" content="Adam Normandin — real-time 3D, GPU kernels and the tools built with them. Projects, prompts and certifications.">
 <link rel="canonical" href="https://adamn.info/">
+<meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0b0a08">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="adamn.info">
 <meta property="og:url" content="https://adamn.info/">
-<meta property="og:title" content="Adam Normandin — Projects &amp; Links">
-<meta property="og:description" content="Adam Normandin — AI builder and DeFi advisor. Real-time 3D projects, certifications, and links.">
+<meta property="og:title" content="Adam Normandin — links, real-time 3D &amp; GPU work">
+<meta property="og:description" content="Adam Normandin — real-time 3D, GPU kernels and the tools built with them. Projects, prompts and certifications.">
 <meta property="og:image" content="https://adamn.info/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Adam Normandin — projects, certs and links">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Adam Normandin — Projects &amp; Links">
-<meta name="twitter:description" content="Adam Normandin — AI builder and DeFi advisor. Real-time 3D projects, certifications, and links.">
+<meta name="twitter:title" content="Adam Normandin — links, real-time 3D &amp; GPU work">
+<meta name="twitter:description" content="Adam Normandin — real-time 3D, GPU kernels and the tools built with them. Projects, prompts and certifications.">
 <meta name="twitter:image" content="https://adamn.info/og.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
 <style>
- :root{--bone:#f2e9d6;--dim:#b7a98c;--blaze:#e8490f}
+ /* ── fonts: self-hosted latin subsets, no third-party origins ───────────── */
+ @font-face{font-family:Archivo;src:url(fonts/archivo.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap}
+ @font-face{font-family:'Plex Mono';src:url(fonts/plex-mono-400.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
+ @font-face{font-family:'Plex Mono';src:url(fonts/plex-mono-500.woff2) format('woff2');font-weight:500;font-style:normal;font-display:swap}
+
+ :root{
+   --bone:#f2e9d6; --dim:#b7a98c; --blaze:#e8490f;
+   --rule:rgba(242,233,214,.13); --rule-2:rgba(242,233,214,.38);
+   --linksize:clamp(30px,10.5vw,66px);
+   --arw:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 18 18 6M9 6h9v9' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+ }
  *{margin:0;padding:0;box-sizing:border-box}
- body{background:#000;color:var(--bone);font-family:'IBM Plex Mono',monospace;min-height:100vh;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+ html{-webkit-text-size-adjust:100%}
+ body{
+   background:#0b0a08;color:var(--bone);
+   font-family:'Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+   min-height:100vh;touch-action:manipulation;
+   -webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;
+ }
  ::selection{background:var(--blaze);color:#fff}
- #c{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
- #oak{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:1;pointer-events:none}
- .film{position:fixed;inset:0;z-index:2;background:radial-gradient(ellipse at 50% 42%,rgba(0,0,0,.10),rgba(8,6,3,.44) 78%,rgba(5,4,2,.60));pointer-events:none}
- .tlink{display:block;text-align:center;text-decoration:none;color:var(--bone);padding:10px 0;--wd:112;--wt:850}
- .word{text-align:center;font-size:11px;letter-spacing:.5em;text-indent:.5em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
- .view{display:none;position:relative;z-index:10;max-width:640px;margin:0 auto;min-height:100vh;min-height:100dvh;flex-direction:column;justify-content:center;padding:56px 22px;padding-bottom:calc(56px + env(safe-area-inset-bottom, 0px));text-shadow:0 2px 24px rgba(0,0,0,.85),0 1px 6px rgba(0,0,0,.9)}
- .view.active{display:flex}
- .view.wide{max-width:960px}
- .tlink .t{display:block;font-family:'Archivo',sans-serif;font-weight:var(--wt);font-stretch:var(--wd);font-variation-settings:"wdth" var(--wd),"wght" var(--wt);font-size:clamp(30px,10.5vw,68px);line-height:.95;letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap;max-width:100%;transition:color .25s}
- .tlink .t .ch{display:inline-block;opacity:0;transform:translateY(.55em) rotate(4deg);animation:rise .8s cubic-bezier(.2,.9,.2,1) forwards;animation-delay:calc(var(--i)*38ms)}
- @keyframes rise{to{opacity:1;transform:none}}
- .tlink:hover .t,.tlink:active .t{color:var(--blaze);--wd:125;--wt:950}
- .tlink.ghost .t{color:transparent;-webkit-text-stroke:1.5px var(--bone)}
- .tlink.ghost:hover .t{color:var(--blaze);-webkit-text-stroke:1.5px var(--blaze)}
- .foot{text-align:center;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-top:38px;opacity:.7}
- .back{align-self:flex-start;text-decoration:none;color:var(--dim);font-size:11px;letter-spacing:.28em;text-transform:uppercase;margin-bottom:26px}
- .back:hover{color:var(--blaze)}
- h2.page{font-family:'Archivo',sans-serif;font-weight:900;font-stretch:118%;font-variation-settings:"wdth" 118,"wght" 900;font-size:clamp(30px,9vw,64px);letter-spacing:-.02em;text-transform:uppercase;text-align:center;margin-bottom:6px;line-height:.95;overflow-wrap:break-word}
- p.page-sub{text-align:center;font-size:10px;letter-spacing:.28em;text-indent:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:30px}
- .certgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
- .certcard{display:block;text-decoration:none;color:var(--bone)}
- .certcard img{display:block;width:100%;aspect-ratio:1600/1237;object-fit:cover;background:#0d0b08;transition:transform .22s,filter .22s}
- .certcard .t{display:block;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.24em;text-indent:.24em;text-transform:uppercase;color:var(--dim);padding:12px 4px 0;transition:color .22s}
- .certcard:hover img{transform:translateY(-2px);filter:brightness(1.06)}
- .certcard:hover .t{color:var(--blaze)}
- .certfeat{grid-column:1/-1}
- @media (max-width:560px){.certgrid{grid-template-columns:1fr}}
- .view.gallery{max-width:1120px}
- .labgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:22px 18px}
- .labcard{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;text-align:left;color:var(--bone);font-family:inherit}
- .labcard .shot{display:block;position:relative;aspect-ratio:16/10;overflow:hidden;background:#0d0b08;box-shadow:0 10px 26px rgba(0,0,0,.5)}
- .labcard .shot .fb{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;padding:14px;text-align:center;
-   font-family:'Archivo',sans-serif;font-weight:900;font-stretch:104%;font-variation-settings:"wdth" 104,"wght" 900;
-   font-size:14px;line-height:1.05;letter-spacing:-.01em;text-transform:uppercase;color:rgba(242,233,214,.62);
-   background:radial-gradient(ellipse at 28% 22%,rgba(58,74,34,.8),rgba(11,10,8,0) 68%),radial-gradient(ellipse at 80% 84%,rgba(122,74,28,.55),rgba(11,10,8,0) 62%),#0d0b08}
- .labcard .shot img{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover;filter:brightness(.82);transition:transform .35s cubic-bezier(.2,.9,.2,1),filter .25s}
- .labcard:hover .shot img,.labcard:focus-visible .shot img{transform:scale(1.045);filter:brightness(1.05)}
- .labcard .cname{display:block;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:106%;font-variation-settings:"wdth" 106,"wght" 800;font-size:14px;line-height:1.08;letter-spacing:-.005em;text-transform:uppercase;margin-top:11px;transition:color .2s}
- .labcard:hover .cname,.labcard.on .cname{color:var(--blaze)}
- .labcard .cdesc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:10px;line-height:1.55;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:5px}
- .labcard:focus-visible{outline:2px solid var(--blaze);outline-offset:4px}
- .labpanel{display:none;margin-top:38px}
- .labpanel.open{display:block}
- .labpanel .bar{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:11px}
- .labpanel .nm{font-family:'Archivo',sans-serif;font-weight:800;font-stretch:106%;font-variation-settings:"wdth" 106,"wght" 800;font-size:15px;letter-spacing:-.01em;text-transform:uppercase}
- .labpanel .x{background:none;border:0;cursor:pointer;color:var(--dim);font-family:inherit;font-size:10px;letter-spacing:.24em;text-transform:uppercase;padding:8px 2px}
- .labpanel .x:hover{color:var(--blaze)}
- .labpanel .x:focus-visible{outline:2px solid var(--blaze);outline-offset:2px}
- .viewer{width:100%;aspect-ratio:16/9;min-height:280px;border:none;background:#000;box-shadow:0 18px 44px rgba(0,0,0,.55)}
- .openfull{display:block;text-align:center;margin-top:12px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:12px}
- .openfull:hover{color:var(--blaze)}
- .labdesc{text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:10px;overflow-wrap:anywhere}
- .labdesc .u{opacity:.65}
- @media (max-width:560px){.view{padding:44px 16px}.tlink{padding:12px 0}.viewer{min-height:200px}h2.page{font-size:clamp(28px,11vw,40px)}
-   .labgrid{grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:18px 13px}
-   .labcard .cname{font-size:12.5px}.labcard .cdesc{display:none}}
- @media (max-width:380px){.tlink .t{font-size:clamp(26px,11.5vw,40px);letter-spacing:-.03em}.tlink.ghost .t{-webkit-text-stroke-width:1px}}
- @media (hover:none){.tlink{padding:16px 0}.tlink:active .t{color:var(--blaze)}.tlink.ghost:active .t{color:var(--blaze);-webkit-text-stroke:1.5px var(--blaze)}.back{padding:14px 8px;min-height:44px;display:inline-block}.openfull{padding:16px;min-height:44px}
-   .labcard .shot img{filter:brightness(.95)}.labcard:active .cname{color:var(--blaze)}.labpanel .x{padding:12px 6px;min-height:44px}}
- @media (prefers-reduced-motion:reduce){.tlink .t .ch{animation:none;opacity:1;transform:none}.tlink{scroll-behavior:auto}}
+ a{color:inherit}
+
+ /* ── background: poster paints instantly, canvas fades in over it ───────── */
+ .bg{position:fixed;inset:0;z-index:0;background:#0b0a08 url(poster.jpg) center/cover no-repeat}
+ #c{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .9s ease}
+ #c.on{opacity:1}
+
+ /* ── views ──────────────────────────────────────────────────────────────── */
+ .view{
+   display:none;position:relative;z-index:10;max-width:660px;margin:0 auto;
+   min-height:100vh;min-height:100dvh;flex-direction:column;justify-content:center;
+   padding:56px 22px;padding-bottom:calc(56px + env(safe-area-inset-bottom,0px));
+   text-shadow:0 1px 4px rgba(0,0,0,.5);
+ }
+ .view.on{display:flex}
+ .view--wide{max-width:960px}
+ .view--gal{max-width:1120px;justify-content:flex-start;padding-top:calc(46px + env(safe-area-inset-top,0px))}
+ /* soft scrim so type never fights the fluid; sits above the canvas, below content */
+ .view::before{
+   content:'';position:absolute;inset:-14% -18%;z-index:-1;pointer-events:none;
+   background:radial-gradient(ellipse 56% 44% at 50% 50%,rgba(6,5,3,.78),rgba(6,5,3,.52) 54%,rgba(6,5,3,0) 79%);
+ }
+ /* the two sub-pages are tall and scroll, so they get a full-height scrim rather
+    than a centred ellipse — otherwise the back link lands on bare fluid */
+ .view--wide::before,.view--gal::before{
+   background:linear-gradient(180deg,rgba(6,5,3,.76),rgba(6,5,3,.50) 38%,rgba(6,5,3,.68));
+ }
+
+ /* ── home ───────────────────────────────────────────────────────────────── */
+ .ident{text-align:center;margin-bottom:clamp(24px,4.4vh,44px)}
+ .ident__name{
+   font-size:13px;font-weight:500;letter-spacing:.46em;text-indent:.46em;
+   text-transform:uppercase;color:var(--bone);
+ }
+ .ident__meta{
+   font-size:10px;letter-spacing:.24em;text-indent:.24em;text-transform:uppercase;
+   color:var(--dim);margin-top:10px;
+ }
+ .ident__rule{display:block;width:36px;height:1px;background:var(--rule-2);margin:16px auto 0}
+
+ .links{display:flex;flex-direction:column}
+ .link{display:block;text-align:center;text-decoration:none;padding:clamp(4px,1.35vh,13px) 0;--wd:110;--wt:840}
+ .link__in{display:inline-block;position:relative;font-size:var(--linksize)}
+ .link__t{
+   display:inline-block;position:relative;
+   font-family:Archivo,sans-serif;font-weight:var(--wt);font-stretch:var(--wd);
+   font-variation-settings:"wdth" var(--wd),"wght" var(--wt);
+   font-size:1em;line-height:1;letter-spacing:-.022em;
+   text-transform:uppercase;white-space:nowrap;max-width:100%;
+   transition:color .28s ease;
+ }
+ .link__t .ch{display:inline-block;animation:rise .7s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(var(--i)*32ms)}
+ @keyframes rise{from{opacity:0;transform:translateY(.5em) rotate(3deg)}}
+ /* rule sweeps out from the left on hover/focus — the "this is a link" affordance */
+ .link__t::after{
+   content:'';position:absolute;left:0;right:0;bottom:-.05em;height:.045em;min-height:2px;
+   background:var(--blaze);transform:scaleX(0);transform-origin:left;
+   transition:transform .4s cubic-bezier(.2,.9,.2,1);
+ }
+ .link:hover .link__t,.link:focus-visible .link__t{color:var(--blaze);--wd:124;--wt:930}
+ .link:hover .link__t::after,.link:focus-visible .link__t::after{transform:scaleX(1)}
+ /* external marker, drawn as a mask so it never depends on a font glyph */
+ .link__x{
+   position:absolute;left:100%;top:.08em;width:.3em;height:.3em;margin-left:.1em;
+   background:currentColor;
+   -webkit-mask:var(--arw) center/contain no-repeat;mask:var(--arw) center/contain no-repeat;
+   opacity:.62;transition:opacity .28s,transform .28s;
+ }
+ .link:hover .link__x{opacity:1;transform:translate(.05em,-.05em)}
+
+ .foot{text-align:center;margin-top:clamp(26px,4.5vh,46px)}
+ .foot__hint{
+   font-size:10px;letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;
+   color:var(--dim);opacity:.66;
+ }
+ /* the hint only makes sense where the fluid actually reacts to a pointer */
+ @media (hover:none),(prefers-reduced-motion:reduce){.foot__hint{display:none}}
+
+ /* ── shared page chrome ─────────────────────────────────────────────────── */
+ .back{
+   display:inline-flex;align-items:center;gap:9px;align-self:flex-start;
+   text-decoration:none;color:var(--dim);font-size:11px;letter-spacing:.26em;
+   text-transform:uppercase;margin-bottom:30px;padding:6px 0;transition:color .25s;
+ }
+ .back i{
+   width:11px;height:11px;background:currentColor;display:block;
+   -webkit-mask:var(--arw) center/contain no-repeat;mask:var(--arw) center/contain no-repeat;
+   transform:rotate(180deg);transition:transform .3s cubic-bezier(.2,.9,.2,1);
+ }
+ .back:hover,.back:focus-visible{color:var(--blaze)}
+ .back:hover i{transform:rotate(180deg) translate(.12em,0)}
+ h2.page{
+   font-family:Archivo,sans-serif;font-weight:900;font-stretch:116%;
+   font-variation-settings:"wdth" 116,"wght" 900;
+   font-size:clamp(30px,8.4vw,60px);line-height:.95;letter-spacing:-.022em;
+   text-transform:uppercase;text-align:center;overflow-wrap:break-word;
+ }
+ p.page-sub{
+   text-align:center;font-size:10px;letter-spacing:.26em;text-indent:.26em;
+   text-transform:uppercase;color:var(--dim);margin:12px 0 clamp(24px,4vh,38px);
+ }
+
+ /* ── certs: certificates are documents, so they get a mat and are never cropped */
+ .docs{
+   display:grid;grid-template-columns:repeat(auto-fill,minmax(252px,1fr));gap:clamp(16px,2.2vw,26px);
+   padding:clamp(14px,2.2vw,24px);border:1px solid rgba(242,233,214,.075);
+   background:rgba(8,7,5,.40);
+ }
+ @media (min-width:700px){
+   .docs{-webkit-backdrop-filter:blur(7px) saturate(1.06);backdrop-filter:blur(7px) saturate(1.06)}
+ }
+ .doc{display:block;text-decoration:none;color:var(--bone)}
+ .doc__mat{
+   display:block;padding:9px;border:1px solid var(--rule);
+   background:linear-gradient(180deg,rgba(242,233,214,.075),rgba(242,233,214,.02));
+   transition:border-color .28s ease,transform .28s cubic-bezier(.2,.9,.2,1);
+ }
+ .doc img{
+   display:block;width:100%;height:auto;object-fit:contain;background:#0b0a08;
+   filter:brightness(.9) contrast(1.02);transition:filter .28s ease;
+ }
+ .doc__t{
+   display:block;margin-top:12px;font-size:11px;font-weight:500;letter-spacing:.2em;
+   text-transform:uppercase;color:var(--dim);text-align:center;transition:color .28s ease;
+ }
+ .doc:hover .doc__mat,.doc:focus-visible .doc__mat{border-color:rgba(232,73,15,.5);transform:translateY(-3px)}
+ .doc:hover img,.doc:focus-visible img{filter:brightness(1.02) contrast(1.02)}
+ .doc:hover .doc__t,.doc:focus-visible .doc__t{color:var(--blaze)}
+
+ /* ── prompts gallery ────────────────────────────────────────────────────── */
+ .labs{
+   display:grid;grid-template-columns:repeat(auto-fill,minmax(206px,1fr));gap:22px 18px;
+   padding:clamp(14px,2.2vw,24px);border:1px solid rgba(242,233,214,.075);
+   background:rgba(8,7,5,.44);
+ }
+ @media (min-width:700px){
+   .labs{-webkit-backdrop-filter:blur(7px) saturate(1.06);backdrop-filter:blur(7px) saturate(1.06)}
+ }
+ .lab{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;
+      text-align:left;color:var(--bone);font-family:inherit}
+ .lab__shot{
+   display:block;position:relative;aspect-ratio:16/10;overflow:hidden;background:#0d0b08;
+   border:1px solid rgba(242,233,214,.09);box-shadow:0 10px 24px rgba(0,0,0,.45);
+   transition:border-color .28s ease;
+ }
+ .lab__fb{
+   position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;
+   padding:14px;text-align:center;font-family:Archivo,sans-serif;font-weight:900;
+   font-stretch:104%;font-variation-settings:"wdth" 104,"wght" 900;
+   font-size:14px;line-height:1.05;letter-spacing:-.01em;text-transform:uppercase;
+   color:rgba(242,233,214,.62);
+   background:radial-gradient(ellipse at 28% 22%,rgba(58,74,34,.8),rgba(11,10,8,0) 68%),
+              radial-gradient(ellipse at 80% 84%,rgba(122,74,28,.55),rgba(11,10,8,0) 62%),#0d0b08;
+ }
+ .lab__shot img{
+   position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover;
+   filter:brightness(.84);transition:transform .35s cubic-bezier(.2,.9,.2,1),filter .25s;
+ }
+ .lab:hover .lab__shot,.lab:focus-visible .lab__shot{border-color:rgba(232,73,15,.5)}
+ .lab:hover .lab__shot img,.lab:focus-visible .lab__shot img{transform:scale(1.04);filter:brightness(1.04)}
+ .lab__n{
+   display:block;font-family:Archivo,sans-serif;font-weight:800;font-stretch:106%;
+   font-variation-settings:"wdth" 106,"wght" 800;font-size:14px;line-height:1.1;
+   letter-spacing:-.005em;text-transform:uppercase;margin-top:12px;transition:color .22s;
+ }
+ .lab__d{
+   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+   font-size:10.5px;line-height:1.6;letter-spacing:.07em;text-transform:uppercase;
+   color:var(--dim);margin-top:6px;
+ }
+ .lab:hover .lab__n,.lab[aria-current="true"] .lab__n{color:var(--blaze)}
+
+ .labview{margin-top:clamp(26px,4vh,40px)}
+ .labview[hidden]{display:none}
+ .labview__bar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:12px}
+ .labview__nm{
+   font-family:Archivo,sans-serif;font-weight:800;font-stretch:106%;
+   font-variation-settings:"wdth" 106,"wght" 800;font-size:15px;letter-spacing:-.01em;
+   text-transform:uppercase;
+ }
+ .labview__x{
+   display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;
+   color:var(--dim);font-family:inherit;font-size:10px;letter-spacing:.22em;
+   text-transform:uppercase;padding:8px 2px;transition:color .22s;
+ }
+ .labview__x i{
+   width:9px;height:9px;background:currentColor;display:block;
+   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l12 12M18 6L6 18' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l12 12M18 6L6 18' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+ }
+ .labview__x:hover,.labview__x:focus-visible{color:var(--blaze)}
+ .labview__stage{
+   position:relative;width:100%;aspect-ratio:16/9;min-height:240px;background:#000;
+   border:1px solid var(--rule);box-shadow:0 18px 44px rgba(0,0,0,.55);
+ }
+ .labview__stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+ .labview__u{
+   text-align:center;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+   color:var(--dim);opacity:.7;margin-top:12px;overflow-wrap:anywhere;
+ }
+ .labview__open{
+   display:block;text-align:center;margin-top:6px;font-size:11px;letter-spacing:.26em;
+   text-transform:uppercase;color:var(--dim);text-decoration:none;padding:14px;transition:color .22s;
+ }
+ .labview__open:hover,.labview__open:focus-visible{color:var(--blaze)}
+
+ :where(a,button):focus-visible{outline:2px solid var(--blaze);outline-offset:4px}
+ .lab:focus-visible{outline-offset:6px}
+
+ @media (max-width:560px){
+   .view{padding:44px 16px}
+   .view--gal{padding-top:calc(36px + env(safe-area-inset-top,0px))}
+   :root{--linksize:clamp(27px,9.7vw,44px)}
+   .link{padding:clamp(5px,1.6vh,13px) 0}
+   h2.page{font-size:clamp(28px,11vw,42px)}
+   .docs{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px 12px;padding:12px}
+   .doc__mat{padding:6px}
+   .doc__t{font-size:10px;margin-top:9px}
+   .labs{grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:18px 13px;padding:12px}
+   .lab__d{display:none}
+   .lab__n{font-size:12.5px}
+ }
+ @media (max-width:360px){
+   .link__t{letter-spacing:-.03em}
+ }
+ @media (prefers-reduced-motion:reduce){
+   .link__t .ch{animation:none}
+   .link__t::after{transition:none}
+   *{scroll-behavior:auto}
+ }
 </style>
 </head>
 <body>
- <canvas id="c"></canvas>
- <canvas id="oak"></canvas>
- <div class="film"></div>
-<main class="view active" id="v-home">
-  <p class="word">foshowithit</p>
-  <nav>
-    <a class="tlink" href="https://github.com/Foshowithit" target="_blank" rel="noopener"><span class="t" data-split>GitHub</span></a>
-    <a class="tlink ghost" href="#lab"><span class="t" data-split>Prompts</span></a>
-    <a class="tlink" href="https://flowrouter.work" target="_blank" rel="noopener"><span class="t" data-split>FlowRouter</span></a>
-     <a class="tlink ghost" href="#certs"><span class="t" data-split>Certs</span></a>
-   </nav>
-   <p class="foot">move to stir · press to push</p>
- </main>
- <main class="view wide" id="v-certs">
-   <a class="back" href="#">← back</a>
-   <h2 class="page">Certs</h2>
-   <p class="page-sub">Adam Normandin · credentials</p>
-   <div class="certgrid">
-     <a class="certcard certfeat" href="certs/rocm-associate.pdf" target="_blank" rel="noopener"><img src="certs/prev/rocm-associate.webp" alt="AMD ROCm Certified Associate certificate" loading="lazy" decoding="async"><span class="t">ROCm Certified Associate</span></a>
-     <a class="certcard" href="certs/rdna-debug.pdf" target="_blank" rel="noopener"><img src="certs/prev/rdna-debug.webp" alt="Debugging RDNA GPU Kernels certificate" loading="lazy" decoding="async"><span class="t">RDNA Debug</span></a>
-     <a class="certcard" href="certs/triton.pdf" target="_blank" rel="noopener"><img src="certs/prev/triton.webp" alt="Triton Kernel Development certificate" loading="lazy" decoding="async"><span class="t">Triton Kernels</span></a>
-     <a class="certcard" href="certs/agents-201.pdf" target="_blank" rel="noopener"><img src="certs/prev/agents-201.webp" alt="AI Agents 201 certificate" loading="lazy" decoding="async"><span class="t">Agents 201</span></a>
-     <a class="certcard" href="certs/agents-101.pdf" target="_blank" rel="noopener"><img src="certs/prev/agents-101.webp" alt="AI Agents 101 certificate" loading="lazy" decoding="async"><span class="t">Agents 101</span></a>
-   </div>
- </main>
- <main class="view gallery" id="v-lab">
-  <a class="back" href="#">← back</a>
+<div class="bg"><canvas id="c"></canvas></div>
+
+<main class="view on" id="v-home">
+  <header class="ident">
+    <p class="ident__name">Adam Normandin</p>
+    <p class="ident__meta">real-time 3d · gpu kernels · tools</p>
+    <span class="ident__rule" aria-hidden="true"></span>
+  </header>
+  <nav class="links" aria-label="Primary">
+    <a class="link" href="https://github.com/Foshowithit" target="_blank" rel="noopener">
+      <span class="link__in"><span class="link__t" data-split>GitHub</span><span class="link__x" aria-hidden="true"></span></span>
+    </a>
+    <a class="link" href="#lab">
+      <span class="link__in"><span class="link__t" data-split>Prompts</span></span>
+    </a>
+    <a class="link" href="https://flowrouter.work" target="_blank" rel="noopener">
+      <span class="link__in"><span class="link__t" data-split>FlowRouter</span><span class="link__x" aria-hidden="true"></span></span>
+    </a>
+    <a class="link" href="#certs">
+      <span class="link__in"><span class="link__t" data-split>Certs</span></span>
+    </a>
+  </nav>
+  <footer class="foot">
+    <p class="foot__hint">move to stir · press to push</p>
+  </footer>
+</main>
+
+<main class="view view--wide" id="v-certs">
+  <a class="back" href="#"><i aria-hidden="true"></i>back</a>
+  <h2 class="page">Certs</h2>
+  <p class="page-sub">Adam Normandin · credentials</p>
+  <div class="docs">
+    <a class="doc" href="certs/rocm-associate.pdf" target="_blank" rel="noopener">
+      <span class="doc__mat"><img src="certs/prev/rocm-associate.webp" width="1600" height="1237" alt="AMD ROCm Certified Associate certificate" loading="lazy" decoding="async"></span>
+      <span class="doc__t">ROCm Certified Associate</span>
+    </a>
+    <a class="doc" href="certs/rdna-debug.pdf" target="_blank" rel="noopener">
+      <span class="doc__mat"><img src="certs/prev/rdna-debug.webp" width="1600" height="1237" alt="Debugging RDNA GPU Kernels certificate" loading="lazy" decoding="async"></span>
+      <span class="doc__t">RDNA Debug</span>
+    </a>
+    <a class="doc" href="certs/triton.pdf" target="_blank" rel="noopener">
+      <span class="doc__mat"><img src="certs/prev/triton.webp" width="1600" height="1237" alt="Triton Kernel Development certificate" loading="lazy" decoding="async"></span>
+      <span class="doc__t">Triton Kernels</span>
+    </a>
+    <a class="doc" href="certs/agents-201.pdf" target="_blank" rel="noopener">
+      <span class="doc__mat"><img src="certs/prev/agents-201.webp" width="1600" height="1237" alt="AI Agents 201 certificate" loading="lazy" decoding="async"></span>
+      <span class="doc__t">Agents 201</span>
+    </a>
+    <a class="doc" href="certs/agents-101.pdf" target="_blank" rel="noopener">
+      <span class="doc__mat"><img src="certs/prev/agents-101.webp" width="1600" height="1237" alt="AI Agents 101 certificate" loading="lazy" decoding="async"></span>
+      <span class="doc__t">Agents 101</span>
+    </a>
+  </div>
+</main>
+
+<main class="view view--gal" id="v-lab">
+  <a class="back" href="#"><i aria-hidden="true"></i>back</a>
   <h2 class="page">Prompts</h2>
   <p class="page-sub">auto-synced from github · click a card to preview</p>
-  <div class="labgrid" id="lablist"></div>
-  <div class="labpanel" id="labpanel">
-    <div class="bar">
-      <span class="nm" id="labname"></span>
-      <button class="x" id="labclose" type="button">close ✕</button>
+  <div class="labs" id="lablist"></div>
+  <section class="labview" id="labpanel" hidden aria-label="Project preview">
+    <div class="labview__bar">
+      <span class="labview__nm" id="labname"></span>
+      <button class="labview__x" id="labclose" type="button">close <i aria-hidden="true"></i></button>
     </div>
-    <iframe class="viewer" id="labview" title="live preview" loading="lazy"></iframe>
-    <p class="labdesc" id="labdesc"></p>
-    <a class="openfull" id="labopen" href="#" target="_blank" rel="noopener">open full ↗</a>
-  </div>
- </main>
+    <div class="labview__stage"><iframe id="labframe" title="Live preview" loading="lazy" referrerpolicy="no-referrer"></iframe></div>
+    <p class="labview__u" id="laburl"></p>
+    <a class="labview__open" id="labopen" href="#" target="_blank" rel="noopener">open full page</a>
+  </section>
+</main>
+
+<noscript><style>.view{display:flex;min-height:0;padding-top:64px;padding-bottom:64px}.back,.labview{display:none}</style></noscript>
+
 <script>
 "use strict";
-/* ── Prompts list: auto-discovered from GitHub Pages ────────────────────────
-   Every repo under GH_USER with Pages turned on shows up here on its own,
-   newest first. Push a new page -> it appears. Nothing to edit by hand.
-   Tunables: SORT, SKIP, NAMES, ACRONYMS. FALLBACK renders instantly and is
-   what shows if the API is unreachable or rate-limited (60 req/hr per IP). */
-const GH_USER='Foshowithit';
-const SORT='created';                    // 'created' | 'updated' | 'alpha'
-const SKIP=new Set(['adamn.info']);      // repos to keep off the list
-const NAMES={                            // optional pretty-name overrides
- 'village-above-the-clouds'    :'Village',
- 'village-above-the-clouds-omp':'Village OMP',
- 'avignon-throne-of-stone'     :'Avignon',
- 'mont-saint-michel'           :'Mont St Michel',
- 'flowrouter-promo'            :'FlowRouter Promo',
-};
-const ACRONYMS=new Set(['os','omp','ai','ml','ui','api','gpu','rocm','rdna','v2','2d','3d','ip','xr']);
-const FALLBACK=[
- {n:"Sacred Heart",u:"https://foshowithit.github.io/sacred-heart/"},
- {n:"Village",u:"https://foshowithit.github.io/village-above-the-clouds/"},
- {n:"Village OMP",u:"https://foshowithit.github.io/village-above-the-clouds-omp/"},
- {n:"Slewing Bearing",u:"https://foshowithit.github.io/slewing-bearing/"},
- {n:"Mont St Michel",u:"https://foshowithit.github.io/mont-saint-michel/"},
- {n:"Cathedral City",u:"https://foshowithit.github.io/cathedral-city/"},
- {n:"The Cathedral",u:"https://foshowithit.github.io/the-cathedral/"},
- {n:"Avignon",u:"https://foshowithit.github.io/avignon-throne-of-stone/"},
- {n:"Aether OS",u:"https://foshowithit.github.io/aether-os/"},
- {n:"Hog Crankers",u:"https://foshowithit.github.io/hog-crankers/"},
- {n:"Industria",u:"https://foshowithit.github.io/industria/"},
- {n:"R9700 Build",u:"https://foshowithit.github.io/r9700-build/"},
-];
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const pretty=s=>NAMES[s]||s.split('-').map(w=>ACRONYMS.has(w)?w.toUpperCase():w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
-const pageUrl=s=>'https://'+GH_USER.toLowerCase()+'.github.io/'+s+'/';
-const CACHE_KEY='adamn.prompts.v1', CACHE_MS=30*60*1000;
-let LABS=FALLBACK.slice();
-function readCache(){
-  try{
-    const r=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');
-    if(r&&Date.now()-r.t<CACHE_MS&&r.d&&r.d.length) return r.d;
-  }catch(e){}
-  return null;
-}
-function writeCache(d){ try{ localStorage.setItem(CACHE_KEY,JSON.stringify({t:Date.now(),d:d})); }catch(e){} }
-function discover(){
-  return fetch('https://api.github.com/users/'+GH_USER+'/repos?per_page=100',{headers:{'Accept':'application/vnd.github+json'}})
-    .then(r=>{ if(!r.ok) throw new Error('github '+r.status); return r.json(); })
-    .then(repos=>repos
-      .filter(r=>r.has_pages&&!r.archived&&!r.fork&&!SKIP.has(r.name))
-      .sort((a,b)=>SORT==='alpha'?a.name.localeCompare(b.name)
-                  :SORT==='updated'?b.pushed_at.localeCompare(a.pushed_at)
-                  :b.created_at.localeCompare(a.created_at))
-      .map(r=>({n:pretty(r.name),u:pageUrl(r.name),d:r.description||''})));
-}
-const slugOf=u=>u.replace(/\/+$/,'').split('/').pop();
-// Thumbnail comes from tools/shoot-thumbs.sh. If a repo has no capture yet the
-// <img> 404s, removes itself, and the branded tile underneath shows through —
-// so a brand new page still gets a deliberate-looking card with no network
-// dependency and nothing to configure.
-const cardHTML=(l,i)=>{
-  const s=slugOf(l.u);
-  return '<button class="labcard" type="button" data-i="'+i+'" aria-label="Preview: '+esc(l.n)+'">'
-    +'<span class="shot">'
-    +'<span class="fb">'+esc(l.n)+'</span>'
-    +'<img src="thumbs/'+esc(s)+'.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()">'
-    +'</span>'
-    +'<span class="cname">'+esc(l.n)+'</span>'
-    +(l.d?'<span class="cdesc">'+esc(l.d)+'</span>':'')
-    +'</button>';
-};
- const lablist=document.getElementById('lablist'),labview=document.getElementById('labview'),
-       labdesc=document.getElementById('labdesc'),labopen=document.getElementById('labopen'),
-       labpanel=document.getElementById('labpanel'),labname=document.getElementById('labname'),
-       labclose=document.getElementById('labclose');
- let labUrl=null, labUser=false, discovering=true;
- function pickLab(i){
-   const l=LABS[i]; if(!l) return;
-   if(labview.getAttribute('src')!==l.u) labview.src=l.u;
-   labname.textContent=l.n;
-   labdesc.innerHTML='<span class="u">'+esc(l.u)+'</span>';
-   labopen.href=l.u;
-   labpanel.classList.add('open');
-   [...lablist.children].forEach((c,j)=>c.classList.toggle('on',j===i));
-   labUrl=l.u;
- }
- function renderLabs(){
-   lablist.innerHTML=LABS.map(cardHTML).join('');
-   lablist.querySelectorAll('.labcard').forEach(c=>c.onclick=()=>{ labUser=true; pickLab(+c.dataset.i); });
-   const i=labUrl?LABS.findIndex(l=>l.u===labUrl):-1;
-   if(i>=0) pickLab(i); else if(labUrl) pickLab(0);
- }
- labclose.onclick=()=>{
-   labUser=true; labUrl=null;
-   labpanel.classList.remove('open');
-   labview.removeAttribute('src');   // tear the page down, don't just hide it
-   [...lablist.children].forEach(c=>c.classList.remove('on'));
- };
- const cached=readCache();
- if(cached) LABS=cached;
- renderLabs();
- discover().then(l=>{
-   if(l&&l.length){ LABS=l; writeCache(l); }
-   if(!labUser) labUrl=null;      // user hasn't chosen -> land on the newest page
- }).catch(()=>{}).then(()=>{
-   discovering=false;
-   renderLabs();
-   route();
- });
- function route(){
-   const h=location.hash;
-   const home=h!== '#certs' && h!=='#lab';
-   document.getElementById('v-home').classList.toggle('active',home);
-   document.getElementById('v-certs').classList.toggle('active',h==='#certs');
-   document.getElementById('v-lab').classList.toggle('active',h==='#lab');
-   // hold off until discovery settles, so we don't load a fallback page then swap it
-   if(h==='#lab'&&!labUrl&&!labUser&&!discovering) pickLab(0);
-   scrollTo(0,0);
- }
- addEventListener('hashchange',route); route();
- document.querySelectorAll('[data-split]').forEach(el=>{
-   const txt=el.textContent; el.textContent='';
-   [...txt].forEach((c,i)=>{
-     const s=document.createElement('span'); s.className='ch'; s.style.setProperty('--i',i);
-     s.innerHTML=c===' '?'&nbsp;':c; el.appendChild(s);
-   });
- });
- // letters swell near pointer — hover-capable + motion-ok only, rAF-throttled
- const finePointer=matchMedia('(hover:hover)').matches&&!matchMedia('(prefers-reduced-motion:reduce)').matches;
- let px=0,py=0,ptick=false;
- if(finePointer) addEventListener('pointermove',e=>{
-   px=e.clientX; py=e.clientY;
-   if(ptick) return; ptick=true;
-   requestAnimationFrame(()=>{
-     ptick=false;
-     document.querySelectorAll('.tlink .t').forEach(t=>{
-       const r=t.getBoundingClientRect();
-       const dx=(px-(r.left+r.width/2))/Math.max(1,r.width), dy=(py-(r.top+r.height/2))/Math.max(1,r.height);
-       const d=Math.min(1,Math.hypot(dx,dy));
-       const k=1-d;
-       t.style.fontVariationSettings=`\"wdth\" ${Math.round(112+k*13)},\"wght\" ${Math.round(850+k*150)}`;
-     });
-   });
- }, {passive:true});
-</script>
-<script>
-"use strict";
-/* Living Camo Fluid — feedback-advected pigment field (your build, embedded as page bg) */
-const canvas = document.getElementById('c');
-const gl = canvas.getContext('webgl2', {antialias:false, depth:false, stencil:false, alpha:false});
-if(!gl){ document.body.innerHTML='<p style="color:#e8e0cc">WebGL2 needed</p>'; throw new Error('no webgl2'); }
-window.__VILLAGE_ERR = null;
-const VERT = `#version 300 es
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const reduced = matchMedia('(prefers-reduced-motion:reduce)');
+  const fine = matchMedia('(hover:hover)');
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  /* ── 1. split the display type into animatable glyphs ─────────────────── */
+  document.querySelectorAll('[data-split]').forEach((el) => {
+    const chars = [...el.textContent];
+    el.textContent = '';
+    chars.forEach((c, i) => {
+      const s = document.createElement('span');
+      s.className = 'ch';
+      s.style.setProperty('--i', i);
+      if (c === ' ') s.innerHTML = '&nbsp;'; else s.textContent = c;
+      el.appendChild(s);
+    });
+  });
+
+  /* ── 2. routing ───────────────────────────────────────────────────────── */
+  const VIEWS = { home: $('v-home'), certs: $('v-certs'), lab: $('v-lab') };
+  let current = 'home';
+  function route() {
+    const h = location.hash;
+    current = h === '#certs' ? 'certs' : h === '#lab' ? 'lab' : 'home';
+    for (const k in VIEWS) VIEWS[k].classList.toggle('on', k === current);
+    scrollTo(0, 0);
+  }
+  addEventListener('hashchange', route);
+
+  /* ── 3. prompts gallery: instant fallback list, live list when idle ───── */
+  const GH_USER = 'Foshowithit';
+  const SKIP = new Set(['adamn.info']);
+  const NAMES = {
+    'village-above-the-clouds': 'Village',
+    'village-above-the-clouds-omp': 'Village OMP',
+    'avignon-throne-of-stone': 'Avignon',
+    'mont-saint-michel': 'Mont St Michel',
+    'flowrouter-promo': 'FlowRouter Promo',
+  };
+  const ACRONYMS = new Set(['os', 'omp', 'ai', 'ml', 'ui', 'api', 'gpu', 'rocm', 'rdna', 'v2', '2d', '3d', 'ip', 'xr']);
+  const FALLBACK = [
+    { n: 'Sacred Heart', u: 'https://foshowithit.github.io/sacred-heart/' },
+    { n: 'Village', u: 'https://foshowithit.github.io/village-above-the-clouds/' },
+    { n: 'Village OMP', u: 'https://foshowithit.github.io/village-above-the-clouds-omp/' },
+    { n: 'Slewing Bearing', u: 'https://foshowithit.github.io/slewing-bearing/' },
+    { n: 'Mont St Michel', u: 'https://foshowithit.github.io/mont-saint-michel/' },
+    { n: 'Cathedral City', u: 'https://foshowithit.github.io/cathedral-city/' },
+    { n: 'The Cathedral', u: 'https://foshowithit.github.io/the-cathedral/' },
+    { n: 'Avignon', u: 'https://foshowithit.github.io/avignon-throne-of-stone/' },
+    { n: 'Aether OS', u: 'https://foshowithit.github.io/aether-os/' },
+    { n: 'Hog Crankers', u: 'https://foshowithit.github.io/hog-crankers/' },
+    { n: 'Industria', u: 'https://foshowithit.github.io/industria/' },
+    { n: 'R9700 Build', u: 'https://foshowithit.github.io/r9700-build/' },
+  ];
+  const pretty = (s) => NAMES[s] || s.split('-').map((w) =>
+    ACRONYMS.has(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const slugOf = (u) => u.replace(/\/+$/, '').split('/').pop();
+  const CACHE_KEY = 'adamn.prompts.v2';
+  const CACHE_MS = 30 * 60 * 1000;
+
+  let LABS = FALLBACK.slice();
+  const list = $('lablist'), panel = $('labpanel'), labFrame = $('labframe'),
+    nameEl = $('labname'), urlEl = $('laburl'), openEl = $('labopen');
+
+  const cardHTML = (l, i) =>
+    '<button class="lab" type="button" data-i="' + i + '" aria-label="Preview ' + esc(l.n) + '">' +
+      '<span class="lab__shot"><span class="lab__fb">' + esc(l.n) + '</span>' +
+      '<img src="thumbs/' + esc(slugOf(l.u)) + '.webp" alt="" loading="lazy" decoding="async" width="640" height="400">' +
+      '</span>' +
+      '<span class="lab__n">' + esc(l.n) + '</span>' +
+      (l.d ? '<span class="lab__d">' + esc(l.d) + '</span>' : '') +
+    '</button>';
+
+  // A repo with no capture yet 404s its <img>; drop it so the branded tile shows through.
+  list.addEventListener('error', (e) => {
+    if (e.target.tagName === 'IMG') e.target.remove();
+  }, true);
+
+  function renderLabs() {
+    list.innerHTML = LABS.map(cardHTML).join('');
+  }
+  function openLab(i) {
+    const l = LABS[i];
+    if (!l) return;
+    nameEl.textContent = l.n;
+    urlEl.textContent = l.u;
+    openEl.href = l.u;
+    if (labFrame.getAttribute('src') !== l.u) labFrame.src = l.u;
+    panel.hidden = false;
+    [...list.children].forEach((c, j) => c.setAttribute('aria-current', j === i ? 'true' : 'false'));
+  }
+  function closeLab() {
+    panel.hidden = true;
+    labFrame.removeAttribute('src');   // tear the page down, don't just hide it
+    [...list.children].forEach((c) => c.setAttribute('aria-current', 'false'));
+  }
+  list.addEventListener('click', (e) => {
+    const b = e.target.closest('.lab');
+    if (b) openLab(+b.dataset.i);
+  });
+  $('labclose').addEventListener('click', closeLab);
+
+  function readCache() {
+    try {
+      const r = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+      if (r && Date.now() - r.t < CACHE_MS && Array.isArray(r.d) && r.d.length) return r.d;
+    } catch (e) { /* private mode, quota, bad JSON — fall through to fallback */ }
+    return null;
+  }
+  async function discover() {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 7000);
+    try {
+      const r = await fetch('https://api.github.com/users/' + GH_USER + '/repos?per_page=100',
+        { headers: { Accept: 'application/vnd.github+json' }, signal: ctl.signal });
+      if (!r.ok) throw new Error('github ' + r.status);
+      const repos = await r.json();
+      const next = repos
+        .filter((x) => x.has_pages && !x.archived && !x.fork && !SKIP.has(x.name))
+        .sort((a, b) => b.created_at.localeCompare(a.created_at))
+        .map((x) => ({ n: pretty(x.name), u: 'https://' + GH_USER.toLowerCase() + '.github.io/' + x.name + '/', d: x.description || '' }));
+      if (next.length) {
+        LABS = next;
+        renderLabs();
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d: next })); } catch (e) {}
+      }
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  const cached = readCache();
+  if (cached) LABS = cached;
+  renderLabs();
+  route();
+
+  /* ── 4. background fluid ──────────────────────────────────────────────── */
+  const VERT = `#version 300 es
 layout(location=0) in vec2 p; out vec2 vUv;
 void main(){ vUv = p*0.5+0.5; gl_Position = vec4(p,0.,1.); }`;
-const NOISE = `
+
+  const NOISE = `
 float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
 float vnoise(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
   float a=hash(i),b=hash(i+vec2(1,0)),c=hash(i+vec2(0,1)),d=hash(i+vec2(1,1));
@@ -306,19 +515,20 @@ vec2 voro(vec2 p){ vec2 ip=floor(p), fp=fract(p); float f1=8., f2=8.;
     vec2 r=g+o-fp; float d=dot(r,r);
     if(d<f1){ f2=f1; f1=d; } else if(d<f2){ f2=d; } }
   return sqrt(vec2(f1,f2)); }
- vec3 pal(float h){
-   vec3 c1=vec3(.055,.065,.040);
-   vec3 c2=vec3(.105,.185,.085);
-   vec3 c3=vec3(.385,.425,.205);
-   vec3 c4=vec3(.560,.385,.205);
-   vec3 c5=vec3(.880,.820,.680);
-   vec3 col=mix(c1,c2,smoothstep(.02,.24,h));
-   col=mix(col,c3,smoothstep(.24,.46,h));
-   col=mix(col,c4,smoothstep(.46,.66,h));
-   col=mix(col,c5,smoothstep(.72,.92,h));
-   return col; }
+vec3 pal(float h){
+  vec3 c1=vec3(.055,.065,.040);
+  vec3 c2=vec3(.105,.185,.085);
+  vec3 c3=vec3(.385,.425,.205);
+  vec3 c4=vec3(.560,.385,.205);
+  vec3 c5=vec3(.880,.820,.680);
+  vec3 col=mix(c1,c2,smoothstep(.02,.24,h));
+  col=mix(col,c3,smoothstep(.24,.46,h));
+  col=mix(col,c4,smoothstep(.46,.66,h));
+  col=mix(col,c5,smoothstep(.72,.92,h));
+  return col; }
 `;
-const SIM_FRAG = `#version 300 es
+
+  const SIM_FRAG = `#version 300 es
 precision highp float;
 in vec2 vUv; out vec4 O;
 uniform sampler2D uPrev;
@@ -397,221 +607,269 @@ void main(){
   col = (col-.5)*1.02+.5;
   O = vec4(clamp(col,0.,1.), 1.);
 }`;
-const SHOW_FRAG = `#version 300 es
+
+  /* Presentation pass. The sim runs at a fraction of display resolution, so on its
+     own it upscales to mush. Three things fix that here:
+       1. a relief term — a fake surface normal from the field's own luminance, lit
+          from the upper left, so folds catch a highlight and read as material;
+       2. a native-resolution filament layer — fine structure the low-res sim cannot
+          carry, warped by the field so it moves with the fluid;
+       3. triangular-PDF dither before output, which is what actually kills the
+          banding you otherwise get in gradients this dark. */
+  const SHOW_FRAG = `#version 300 es
 precision highp float;
 in vec2 vUv; out vec4 O;
 uniform sampler2D uTex;
 uniform vec2 uRes;
 uniform float uAspect, uTime;
 ${NOISE}
+float lum(vec3 c){ return dot(c, vec3(.2126,.7152,.0722)); }
 void main(){
   vec2 uv = vUv;
   vec3 base = texture(uTex, uv).rgb;
+
+  vec2 tx = 1.0/uRes;
+  float l0 = lum(base);
+  float lx = lum(texture(uTex, uv+vec2(tx.x,0.)).rgb);
+  float ly = lum(texture(uTex, uv+vec2(0.,tx.y)).rgb);
+  vec3 n = normalize(vec3((l0-lx)*3.6, (l0-ly)*3.6, 1.0));
+  float diff = clamp(dot(n, normalize(vec3(-.42,-.58,.70))), 0., 1.);
+  float spec = pow(clamp(dot(n, normalize(vec3(-.30,-.44,.85))), 0., 1.), 20.);
+
+  vec3 col = base * (.83 + .31*diff) + spec*.05;
+
   vec2 fuv = uv*vec2(uAspect,1.);
-  float w = fbm(fuv*6.0 + vec2(uTime*.015,-uTime*.012) + base.gb*2.0);
-  float m = abs(fract(w*1.8)-.5)*2.;
-  float vein = smoothstep(.05,.005,m)*step(.6,fract(w*9.1));
-  vec3 col = mix(base, vec3(.72,.68,.58), vein*.14);
-  float f = fbm(fuv*22.0 + vec2(-uTime*.02,uTime*.017));
-  col += (f-.5)*.045;
-  col += (hash(uv*uRes+fract(uTime)*7.)-.5)*.028;
-   vec2 q = uv-.5; q.x*=uAspect;
-   col *= 1.0 - dot(q,q)*.38;
-  col = pow(max(col,0.), vec3(.96));
-  O = vec4(col,1.);
+  float fil = fbm(fuv*34.0 + base.rg*2.6 + vec2(uTime*.010, -uTime*.008));
+  col += (fil-.5)*.052;
+
+  vec2 q = uv-.5; q.x *= uAspect;
+  float r2 = dot(q,q);
+  col *= 1.0 - r2*.46;
+  col *= 1.0 - .30*exp(-r2*7.0);
+
+  col = mix(col, col*vec3(.94,.97,1.05), (1.0-clamp(lum(col)*3.2,0.,1.))*.55);
+  col += (hash(uv*uRes + fract(uTime)*11.)-.5)*.020;
+
+  col = pow(max(col,0.), vec3(.955));
+  float d1 = hash(uv*uRes + 13.7);
+  float d2 = hash(uv*uRes*1.37 + 71.3);
+  col += (d1-d2)*(1.6/255.0);
+  O = vec4(clamp(col,0.,1.), 1.);
 }`;
-function prog(vs, fs){
-  const v = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(v,vs); gl.compileShader(v);
-  if(!gl.getShaderParameter(v,gl.COMPILE_STATUS)) throw new Error('vs: '+gl.getShaderInfoLog(v));
-  const f = gl.createShader(gl.FRAGMENT_SHADER); gl.shaderSource(f,fs); gl.compileShader(f);
-  if(!gl.getShaderParameter(f,gl.COMPILE_STATUS)) throw new Error('fs: '+gl.getShaderInfoLog(f));
-  const p = gl.createProgram(); gl.attachShader(p,v); gl.attachShader(p,f); gl.linkProgram(p);
-  if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw new Error('link: '+gl.getProgramInfoLog(p));
-  return p;
-}
-const simP = prog(VERT, SIM_FRAG), showP = prog(VERT, SHOW_FRAG);
-const U = (p,n)=>gl.getUniformLocation(p,n);
-const simU = {prev:U(simP,'uPrev'),res:U(simP,'uRes'),aspect:U(simP,'uAspect'),time:U(simP,'uTime'),
-  slow:U(simP,'uSlow'),ptr:U(simP,'uPtr'),ptrVel:U(simP,'uPtrVel'),ptrDown:U(simP,'uPtrDown'),
-  pulsePos:U(simP,'uPulsePos'),pulseAge:U(simP,'uPulseAge'),ghost:U(simP,'uGhost'),init:U(simP,'uInit')};
-const showU = {tex:U(showP,'uTex'),res:U(showP,'uRes'),aspect:U(showP,'uAspect'),time:U(showP,'uTime')};
-const buf = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
-gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-let simW=0, simH=0, fbos=[], texs=[];
-function makeTargets(w,h){
-  for(const f of fbos) gl.deleteFramebuffer(f);
-  for(const t of texs) gl.deleteTexture(t);
-  fbos=[]; texs=[];
-  simW=w; simH=h;
-  for(let i=0;i<2;i++){
-    const t=gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D,t);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
-    const f=gl.createFramebuffer();
-    gl.bindFramebuffer(gl.FRAMEBUFFER,f);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);
-    fbos.push(f); texs.push(t);
+
+  const canvas = $('c');
+  let gl = null;
+  try {
+    gl = canvas.getContext('webgl2', { antialias: false, depth: false, stencil: false, alpha: false, powerPreference: 'high-performance' });
+  } catch (e) { gl = null; }
+  if (!gl) return;   // poster.jpg stays visible — the page is still complete
+
+  const prog = (vsSrc, fsSrc) => {
+    const sh = (type, src) => {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+      return s;
+    };
+    const p = gl.createProgram();
+    gl.attachShader(p, sh(gl.VERTEX_SHADER, vsSrc));
+    gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fsSrc));
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    return p;
+  };
+
+  let simP, showP;
+  try { simP = prog(VERT, SIM_FRAG); showP = prog(VERT, SHOW_FRAG); }
+  catch (e) { return; }   // shader trouble -> keep the poster, never blank the page
+
+  const U = (p, n) => gl.getUniformLocation(p, n);
+  const simU = {
+    prev: U(simP, 'uPrev'), res: U(simP, 'uRes'), aspect: U(simP, 'uAspect'), time: U(simP, 'uTime'),
+    slow: U(simP, 'uSlow'), ptr: U(simP, 'uPtr'), ptrVel: U(simP, 'uPtrVel'), ptrDown: U(simP, 'uPtrDown'),
+    pulsePos: U(simP, 'uPulsePos'), pulseAge: U(simP, 'uPulseAge'), ghost: U(simP, 'uGhost'), init: U(simP, 'uInit'),
+  };
+  const showU = { tex: U(showP, 'uTex'), res: U(showP, 'uRes'), aspect: U(showP, 'uAspect'), time: U(showP, 'uTime') };
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+  let simW = 0, simH = 0, fbos = [], texs = [], cur = 0, initFrames = 3;
+  const small = () => Math.min(innerWidth, innerHeight) < 720;
+
+  function makeTargets(w, h) {
+    for (const f of fbos) gl.deleteFramebuffer(f);
+    for (const t of texs) gl.deleteTexture(t);
+    fbos = []; texs = []; simW = w; simH = h;
+    for (let i = 0; i < 2; i++) {
+      const t = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      const f = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, f);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0);
+      fbos.push(f); texs.push(t);
+    }
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
   }
-  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
-}
-function sizeCanvas(){
-  const dpr = Math.min(devicePixelRatio||1, 2);
-  canvas.width = Math.round(innerWidth*dpr); canvas.height = Math.round(innerHeight*dpr);
-}
-function simScale(){
-  const dpr = Math.min(devicePixelRatio||1, 2);
-  const maxSim = 640;
-  const aw = innerWidth*dpr, ah = innerHeight*dpr;
-  const s = Math.min(1, maxSim/Math.max(aw,ah));
-  return [Math.max(2,Math.round(aw*s)), Math.max(2,Math.round(ah*s))];
-}
-let initFrames=3;
-function resize(){
-  sizeCanvas();
-  gl.viewport(0,0,canvas.width,canvas.height);
-  const [w,h]=simScale(); makeTargets(w,h);
-  initFrames = 3;
-}
-addEventListener('resize', resize);
-let ptr={x:-2,y:-2}, ptrVel={x:0,y:0}, lastPtr={x:-2,y:-2}, lastT=performance.now();
-let down=false, pulsePos={x:.5,y:.5}, pulseT=-100, ghost={x:.3,y:.6};
-function ev(e){
-  const r=canvas.getBoundingClientRect();
-  const cx=(e.clientX-r.left)/r.width, cy=1-(e.clientY-r.top)/r.height;
-  const now=performance.now(), dt=Math.max(1,now-lastT)/1000;
-  const vx=(cx-lastPtr.x)/dt, vy=(cy-lastPtr.y)/dt;
-  const cl=v=>Math.max(-3,Math.min(3,v));
-  ptrVel.x = ptrVel.x*.82 + cl(vx)*.18;
-  ptrVel.y = ptrVel.y*.82 + cl(vy)*.18;
-  lastPtr={x:cx,y:cy}; lastT=now; ptr={x:cx,y:cy};
-}
-addEventListener('pointermove',ev,{passive:true});
-addEventListener('pointerdown',e=>{ down=true; ev(e); pulsePos={...ptr}; pulseT=tWall; },{passive:true});
-addEventListener('pointerup',()=>down=false,{passive:true});
-let tWall=0, tSlow=0, cur=0, frames=0;
-resize();
-let prevMs=performance.now();
-function frame(){
-  const now=performance.now();
-  let dt=(now-prevMs)/1000; prevMs=now;
-  dt=Math.min(dt,.05);
-  tWall+=dt; tSlow+=dt*.14;
-  ghost.x=.5+.38*Math.sin(tWall*.021+1.7); ghost.y=.5+.34*Math.sin(tWall*.017*.9+.6);
-  ptrVel.x*=.90; ptrVel.y*=.90;
-  const aspect=canvas.width/Math.max(1,canvas.height);
-  gl.bindFramebuffer(gl.FRAMEBUFFER, fbos[1-cur]);
-  gl.viewport(0,0,simW,simH);
-  gl.useProgram(simP);
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, texs[cur]);
-  gl.uniform1i(simU.prev,0);
-  gl.uniform2f(simU.res,simW,simH);
-  gl.uniform1f(simU.aspect,aspect);
-  gl.uniform1f(simU.time,tWall);
-  gl.uniform1f(simU.slow,tSlow);
-  gl.uniform2f(simU.ptr,ptr.x,ptr.y);
-  gl.uniform2f(simU.ptrVel,ptrVel.x,ptrVel.y);
-  gl.uniform1f(simU.ptrDown,down?1:0);
-  gl.uniform2f(simU.pulsePos,pulsePos.x,pulsePos.y);
-  gl.uniform1f(simU.pulseAge,tWall-pulseT);
-  gl.uniform2f(simU.ghost,ghost.x,ghost.y);
-  gl.uniform1f(simU.init,initFrames>0?1:0);
-  gl.drawArrays(gl.TRIANGLES,0,3);
-  cur=1-cur;
-  if(initFrames>0) initFrames--;
-  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
-  gl.viewport(0,0,canvas.width,canvas.height);
-  gl.useProgram(showP);
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D,texs[cur]);
-  gl.uniform1i(showU.tex,0);
-  gl.uniform2f(showU.res,canvas.width,canvas.height);
-  gl.uniform1f(showU.aspect,aspect);
-  gl.uniform1f(showU.time,tWall);
-  gl.drawArrays(gl.TRIANGLES,0,3);
-  frames++;
-  if(frames===5) window.__VILLAGE_READY=true;
-  requestAnimationFrame(frame);
-}
- try{ requestAnimationFrame(frame); }
- catch(err){ window.__VILLAGE_ERR=String(err); throw err; }
- /* Mossy Oak breakup overlay: bark verticals + oak leaves + twigs + acorns */
- (function(){
- const oc=document.getElementById('oak'), ox=oc.getContext('2d');
- const R=(a,b)=>a+Math.random()*(b-a), PICK=a=>a[Math.random()*a.length|0];
- function acorn(g,x,y,s,rot,fill){
-   // simple acorn: cap + nut, tiny — reads as forest floor at a glance
-   g.save(); g.translate(x,y); g.rotate(rot); g.scale(s/10,s/10);
-   g.fillStyle=fill;
-   g.beginPath(); g.ellipse(0,2.5,3.2,4.2,0,0,7); g.fill();
-   g.fillStyle='rgba(52,34,18,.9)';
-   g.beginPath(); g.ellipse(0,-1.5,3.6,2.4,0,0,7); g.fill();
-   g.strokeStyle='rgba(20,12,6,.6)'; g.lineWidth=1;
-   g.beginPath(); g.moveTo(0,-3.5); g.lineTo(1.5,-6); g.stroke();
-   g.restore();
- }
- function paintOak(){
-   const dpr=Math.min(devicePixelRatio||1,1.5);
-   const W=innerWidth, H=innerHeight;
-   oc.width=W*dpr; oc.height=H*dpr; ox.setTransform(dpr,0,0,dpr,0,0);
-   ox.clearRect(0,0,W,H);
-   // Mossy Oak breakup: 3 soft trunks pinned to the edges, center stays open for type
-   const spots=[R(W*0.0,W*0.14), R(W*0.86,W*1.0), R(W*0.16,W*0.3)];
-   for(let i=0;i<3;i++){
-     const bx=spots[i], w=R(54,110), lean=R(-70,70);
-     ox.save(); ox.filter='blur(9px)'; ox.globalAlpha=.5;
-     const halo=ox.createLinearGradient(bx-w,0,bx+w,0);
-     halo.addColorStop(0,'rgba(10,7,4,0)'); halo.addColorStop(.5,'rgba(20,12,7,.9)'); halo.addColorStop(1,'rgba(10,7,4,0)');
-     ox.fillStyle=halo;
-     ox.beginPath();
-     ox.moveTo(bx-w,0); ox.lineTo(bx-w+lean,H); ox.lineTo(bx+w+lean,H); ox.lineTo(bx+w,0);
-     ox.closePath(); ox.fill(); ox.restore();
-     ox.save(); ox.globalAlpha=.6;
-     const core=ox.createLinearGradient(bx-w/2,0,bx+w/2,0);
-     core.addColorStop(0,'rgba(14,9,5,0)'); core.addColorStop(.35,'rgba(43,28,16,.9)');
-     core.addColorStop(.6,'rgba(88,60,36,.8)'); core.addColorStop(1,'rgba(12,8,5,0)');
-     ox.fillStyle=core;
-     ox.beginPath();
-     ox.moveTo(bx-w/2,0); ox.lineTo(bx-w/2+lean,H); ox.lineTo(bx+w/2+lean,H); ox.lineTo(bx+w/2,0);
-     ox.closePath(); ox.fill(); ox.restore();
-     ox.save();
-     ox.beginPath();
-     ox.moveTo(bx-w/2,0); ox.lineTo(bx-w/2+lean,H); ox.lineTo(bx+w/2+lean,H); ox.lineTo(bx+w/2,0);
-     ox.closePath(); ox.clip();
-     for(let k=0;k<7;k++){
-       const off=R(-w/2.4,w/2.4), dark=Math.random()<.65;
-       ox.strokeStyle=dark?PICK(['rgba(8,5,3,.6)','rgba(20,12,7,.55)']):PICK(['rgba(150,112,70,.4)','rgba(112,80,48,.35)']);
-       ox.lineWidth=R(1.5,4); ox.beginPath();
-       for(let y=-10;y<=H+10;y+=30){
-         const t=y/H, x=bx+off+lean*t+Math.sin(y*.02+off)*7;
-         y<0?ox.moveTo(x,y):ox.lineTo(x,y);
-       }
-       ox.stroke();
-     }
-     ox.restore();
-   }
-   // sparse acorns on the floor band only — no floating shapes
-   const tones=['rgba(96,78,48,.75)','rgba(74,64,40,.7)','rgba(58,52,32,.75)'];
-   for(let k=0;k<26;k++) acorn(ox,R(0,W),R(H*.82,H+20),R(7,14),R(-.4,.4),PICK(tones));
-   ox.save(); ox.globalCompositeOperation='screen';
-   for(let k=0;k<34;k++){
-     const x=R(0,W), y=R(0,H*.8), r=R(24,90);
-     const g2=ox.createRadialGradient(x,y,0,x,y,r);
-     g2.addColorStop(0,'rgba(255,220,160,'+R(.05,.13).toFixed(3)+')'); g2.addColorStop(1,'rgba(255,220,160,0)');
-     ox.fillStyle=g2; ox.beginPath(); ox.arc(x,y,r,0,7); ox.fill();
-   }
-   ox.restore();
- }
- paintOak();
- let oakT; addEventListener('resize',()=>{ clearTimeout(oakT); oakT=setTimeout(paintOak,200); });
- })();
- window.__LINKS_READY=true;
+
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.max(2, Math.round(innerWidth * dpr));
+    canvas.height = Math.max(2, Math.round(innerHeight * dpr));
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    const s = Math.min(1, (small() ? 560 : 820) / Math.max(canvas.width, canvas.height));
+    makeTargets(Math.max(2, Math.round(canvas.width * s)), Math.max(2, Math.round(canvas.height * s)));
+    initFrames = 3;
+  }
+  addEventListener('resize', () => { clearTimeout(resize._t); resize._t = setTimeout(resize, 160); });
+
+  const ptr = { x: -2, y: -2 };
+  const ptrVel = { x: 0, y: 0 };
+  const lastPtr = { x: -2, y: -2 };
+  let lastMove = performance.now(), down = false;
+  let pulsePos = { x: .5, y: .5 }, pulseT = -100;
+  const ghost = { x: .3, y: .6 };
+  let tWall = 0, tSlow = 0, ticks = 0, raf = 0, running = false, drawn = 0;
+
+  // One pointermove listener drives both interactions: the fluid push and the
+  // letters swelling toward the cursor. The swell is rAF-batched because it reads
+  // four rects, and doing that inline on every move would thrash layout.
+  const swellTargets = [...document.querySelectorAll('.link__t')];
+  let swellQueued = false, px = 0, py = 0;
+  function swell() {
+    swellQueued = false;
+    for (const t of swellTargets) {
+      const r = t.getBoundingClientRect();
+      const dx = (px - (r.left + r.width / 2)) / Math.max(1, r.width);
+      const dy = (py - (r.top + r.height / 2)) / Math.max(1, r.height);
+      const k = 1 - Math.min(1, Math.hypot(dx, dy));
+      t.style.fontVariationSettings =
+        '"wdth" ' + Math.round(110 + k * 14) + ',"wght" ' + Math.round(840 + k * 110);
+    }
+  }
+
+  function pointer(e) {
+    const r = canvas.getBoundingClientRect();
+    const cx = (e.clientX - r.left) / r.width, cy = 1 - (e.clientY - r.top) / r.height;
+    const now = performance.now(), dt = Math.max(1, now - lastMove) / 1000;
+    const cl = (v) => Math.max(-3, Math.min(3, v));
+    ptrVel.x = ptrVel.x * .82 + cl((cx - lastPtr.x) / dt) * .18;
+    ptrVel.y = ptrVel.y * .82 + cl((cy - lastPtr.y) / dt) * .18;
+    lastPtr.x = cx; lastPtr.y = cy; lastMove = now;
+    ptr.x = cx; ptr.y = cy;
+
+    px = e.clientX; py = e.clientY;
+    if (!swellQueued && swellTargets.length) { swellQueued = true; requestAnimationFrame(swell); }
+  }
+  if (fine.matches && !reduced.matches) {
+    addEventListener('pointermove', pointer, { passive: true });
+    addEventListener('pointerdown', (e) => { down = true; pointer(e); pulsePos = { x: ptr.x, y: ptr.y }; pulseT = tWall; }, { passive: true });
+    addEventListener('pointerup', () => { down = false; }, { passive: true });
+  }
+
+  function simPass(aspect) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbos[1 - cur]);
+    gl.viewport(0, 0, simW, simH);
+    gl.useProgram(simP);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texs[cur]);
+    gl.uniform1i(simU.prev, 0);
+    gl.uniform2f(simU.res, simW, simH);
+    gl.uniform1f(simU.aspect, aspect);
+    gl.uniform1f(simU.time, tWall);
+    gl.uniform1f(simU.slow, tSlow);
+    gl.uniform2f(simU.ptr, ptr.x, ptr.y);
+    gl.uniform2f(simU.ptrVel, ptrVel.x, ptrVel.y);
+    gl.uniform1f(simU.ptrDown, down ? 1 : 0);
+    gl.uniform2f(simU.pulsePos, pulsePos.x, pulsePos.y);
+    gl.uniform1f(simU.pulseAge, tWall - pulseT);
+    gl.uniform2f(simU.ghost, ghost.x, ghost.y);
+    gl.uniform1f(simU.init, initFrames > 0 ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    cur = 1 - cur;
+    if (initFrames > 0) initFrames--;
+  }
+
+  function showPass(aspect) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.useProgram(showP);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texs[cur]);
+    gl.uniform1i(showU.tex, 0);
+    gl.uniform2f(showU.res, canvas.width, canvas.height);
+    gl.uniform1f(showU.aspect, aspect);
+    gl.uniform1f(showU.time, tWall);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  // On phones the sim runs at half rate; the presentation pass still runs every
+  // frame, so motion stays smooth while the expensive part costs half as much.
+  const strideFor = () => (small() ? 2 : 1);
+  // Reduced motion still gets the full look — it just develops, then holds still.
+  const REST_FRAMES = reduced.matches ? 190 : Infinity;
+
+  let prevMs = performance.now();
+  function tick() {
+    const now = performance.now();
+    tWall += Math.min((now - prevMs) / 1000, .05);
+    prevMs = now;
+    tSlow += Math.min(.05, .0083) * .14;
+    ghost.x = .5 + .38 * Math.sin(tWall * .021 + 1.7);
+    ghost.y = .5 + .34 * Math.sin(tWall * .017 * .9 + .6);
+    ptrVel.x *= .90; ptrVel.y *= .90;
+
+    const aspect = canvas.width / Math.max(1, canvas.height);
+    if (ticks % strideFor() === 0) simPass(aspect);
+    ticks++;
+    showPass(aspect);
+
+    if (drawn === 1) canvas.classList.add('on');
+    drawn++;
+    if (drawn >= REST_FRAMES) { running = false; return; }
+    raf = requestAnimationFrame(tick);
+  }
+
+  function start() {
+    if (running || document.hidden) return;
+    running = true;
+    prevMs = performance.now();
+    raf = requestAnimationFrame(tick);
+  }
+  function stop() {
+    running = false;
+    cancelAnimationFrame(raf);
+  }
+
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); stop(); canvas.classList.remove('on'); });
+
+  document.addEventListener('visibilitychange', () => { document.hidden ? stop() : (drawn < REST_FRAMES && start()); });
+
+  function boot() {
+    resize();
+    start();
+  }
+
+  /* ── 6. kick off only once the page is up ─────────────────────────────── */
+  function idle(fn) {
+    if ('requestIdleCallback' in window) requestIdleCallback(fn, { timeout: 2500 });
+    else setTimeout(fn, 200);
+  }
+  function afterLoad(fn) {
+    if (document.readyState === 'complete') idle(fn);
+    else addEventListener('load', () => idle(fn), { once: true });
+  }
+
+  afterLoad(boot);                      // background: never blocks first paint
+  afterLoad(() => { discover().catch(() => {}); });   // gallery sync: never competes with the font
+})();
 </script>
 </body>
 </html>
