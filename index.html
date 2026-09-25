@@ -47,6 +47,8 @@
  .openfull{display:block;text-align:center;margin-top:12px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:12px}
  .openfull:hover{color:var(--blaze)}
  .labdesc{text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:10px;overflow-wrap:anywhere}
+ .labdesc b{color:var(--bone);font-weight:500}
+ .labdesc .u{opacity:.65}
  @media (max-width:560px){.view{padding:44px 16px}.tlink{padding:12px 0}.viewer{min-height:220px}h2.page{font-size:clamp(28px,11vw,40px)}}
  @media (max-width:380px){.tlink .t{font-size:clamp(26px,11.5vw,40px);letter-spacing:-.03em}.tlink.ghost .t{-webkit-text-stroke-width:1px}}
  @media (hover:none){.tlink{padding:16px 0}.tlink:active .t{color:var(--blaze)}.tlink.ghost:active .t{color:var(--blaze);-webkit-text-stroke:1.5px var(--blaze)}.back{padding:14px 8px;min-height:44px;display:inline-block}.openfull{padding:16px;min-height:44px}}
@@ -82,7 +84,7 @@
  <main class="view wide" id="v-lab">
   <a class="back" href="#">← back</a>
   <h2 class="page">Prompts</h2>
-  <p class="page-sub">live github.io pages · preview below</p>
+  <p class="page-sub">live github.io pages · auto-synced</p>
   <div class="lablist" id="lablist"></div>
   <iframe class="viewer" id="labview" src="" title="preview"></iframe>
   <p class="labdesc" id="labdesc"></p>
@@ -90,7 +92,23 @@
  </main>
 <script>
 "use strict";
-const LABS=[
+/* ── Prompts list: auto-discovered from GitHub Pages ────────────────────────
+   Every repo under GH_USER with Pages turned on shows up here on its own,
+   newest first. Push a new page -> it appears. Nothing to edit by hand.
+   Tunables: SORT, SKIP, NAMES, ACRONYMS. FALLBACK renders instantly and is
+   what shows if the API is unreachable or rate-limited (60 req/hr per IP). */
+const GH_USER='Foshowithit';
+const SORT='created';                    // 'created' | 'updated' | 'alpha'
+const SKIP=new Set(['adamn.info']);      // repos to keep off the list
+const NAMES={                            // optional pretty-name overrides
+ 'village-above-the-clouds'    :'Village',
+ 'village-above-the-clouds-omp':'Village OMP',
+ 'avignon-throne-of-stone'     :'Avignon',
+ 'mont-saint-michel'           :'Mont St Michel',
+ 'flowrouter-promo'            :'FlowRouter Promo',
+};
+const ACRONYMS=new Set(['os','omp','ai','ml','ui','api','gpu','rocm','rdna','v2','2d','3d','ip','xr']);
+const FALLBACK=[
  {n:"Sacred Heart",u:"https://foshowithit.github.io/sacred-heart/"},
  {n:"Village",u:"https://foshowithit.github.io/village-above-the-clouds/"},
  {n:"Village OMP",u:"https://foshowithit.github.io/village-above-the-clouds-omp/"},
@@ -104,25 +122,63 @@ const LABS=[
  {n:"Industria",u:"https://foshowithit.github.io/industria/"},
  {n:"R9700 Build",u:"https://foshowithit.github.io/r9700-build/"},
 ];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pretty=s=>NAMES[s]||s.split('-').map(w=>ACRONYMS.has(w)?w.toUpperCase():w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+const pageUrl=s=>'https://'+GH_USER.toLowerCase()+'.github.io/'+s+'/';
+const CACHE_KEY='adamn.prompts.v1', CACHE_MS=30*60*1000;
+let LABS=FALLBACK.slice();
+function readCache(){
+  try{
+    const r=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');
+    if(r&&Date.now()-r.t<CACHE_MS&&r.d&&r.d.length) return r.d;
+  }catch(e){}
+  return null;
+}
+function writeCache(d){ try{ localStorage.setItem(CACHE_KEY,JSON.stringify({t:Date.now(),d:d})); }catch(e){} }
+function discover(){
+  return fetch('https://api.github.com/users/'+GH_USER+'/repos?per_page=100',{headers:{'Accept':'application/vnd.github+json'}})
+    .then(r=>{ if(!r.ok) throw new Error('github '+r.status); return r.json(); })
+    .then(repos=>repos
+      .filter(r=>r.has_pages&&!r.archived&&!r.fork&&!SKIP.has(r.name))
+      .sort((a,b)=>SORT==='alpha'?a.name.localeCompare(b.name)
+                  :SORT==='updated'?b.pushed_at.localeCompare(a.pushed_at)
+                  :b.created_at.localeCompare(a.created_at))
+      .map(r=>({n:pretty(r.name),u:pageUrl(r.name),d:r.description||''})));
+}
  const lablist=document.getElementById('lablist'),labview=document.getElementById('labview'),
        labdesc=document.getElementById('labdesc'),labopen=document.getElementById('labopen');
- let labInit=false;
+ let labUrl=null, labUser=false;
  function pickLab(i){
-   const l=LABS[i];
+   const l=LABS[i]; if(!l) return;
    if(labview.getAttribute('src')!==l.u) labview.src=l.u;
-   labdesc.textContent=l.n+' · '+l.u; labopen.href=l.u;
+   labdesc.innerHTML='<b>'+esc(l.n)+'</b>'+(l.d?' — '+esc(l.d):'')+'<br><span class="u">'+esc(l.u)+'</span>';
+   labopen.href=l.u;
    [...lablist.children].forEach((b,j)=>b.classList.toggle('on',j===i));
-   labInit=true;
+   labUrl=l.u;
  }
- lablist.innerHTML=LABS.map((l,i)=>'<button data-i="'+i+'">'+l.n+'</button>').join('');
- lablist.querySelectorAll('button').forEach(b=>b.onclick=()=>pickLab(+b.dataset.i));
+ function renderLabs(){
+   lablist.innerHTML=LABS.map((l,i)=>'<button data-i="'+i+'" title="'+esc(l.d||l.u)+'">'+esc(l.n)+'</button>').join('');
+   lablist.querySelectorAll('button').forEach(b=>b.onclick=()=>{ labUser=true; pickLab(+b.dataset.i); });
+   const i=labUrl?LABS.findIndex(l=>l.u===labUrl):-1;
+   if(i>=0) pickLab(i); else if(labUrl) pickLab(0);
+ }
+ const cached=readCache();
+ if(cached) LABS=cached;
+ renderLabs();
+ discover().then(l=>{
+   if(!l||!l.length) return;
+   LABS=l; writeCache(l);
+   if(!labUser) labUrl=null;      // user hasn't chosen -> land on the newest page
+   renderLabs();
+   if(location.hash==='#lab'&&!labUrl) pickLab(0);
+ }).catch(()=>{});
  function route(){
    const h=location.hash;
    const home=h!== '#certs' && h!=='#lab';
    document.getElementById('v-home').classList.toggle('active',home);
    document.getElementById('v-certs').classList.toggle('active',h==='#certs');
    document.getElementById('v-lab').classList.toggle('active',h==='#lab');
-   if(h==='#lab'&&!labInit) pickLab(0);
+   if(h==='#lab'&&!labUrl) pickLab(0);
    scrollTo(0,0);
  }
  addEventListener('hashchange',route); route();
