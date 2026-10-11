@@ -38,8 +38,17 @@
    --arw:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 18 18 6M9 6h9v9' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
  }
  *{margin:0;padding:0;box-sizing:border-box}
- html{-webkit-text-size-adjust:100%}
+ /* the scrim below (`.view::before`) bleeds 18% past its container horizontally.
+    On a viewport narrower than the container + that bleed it widened the whole
+    document (phone: 390 -> 460; #lab on a 1440 desktop: 1440 -> 1482), so the page
+    could be panned sideways. Clip at the viewport — everything out there was
+    off-screen anyway, so the render is unchanged. The clip has to sit on `body`:
+    a root-level clip is ignored when the browser computes scrollable overflow,
+    and `html` is only marked non-visible so that `body`'s clip is not propagated
+    away to the viewport (propagation happens only while `html` is `visible`). */
+ html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
  body{
+   overflow-x:clip;
    background:#0b0a08;color:var(--bone);
    font-family:'Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
    min-height:100vh;touch-action:manipulation;
@@ -171,7 +180,7 @@
  .doc:hover img,.doc:focus-visible img{filter:brightness(1.02) contrast(1.02)}
  .doc:hover .doc__t,.doc:focus-visible .doc__t{color:var(--blaze)}
 
- /* ── prompts gallery ────────────────────────────────────────────────────── */
+ /* ── projects gallery ────────────────────────────────────────────────────── */
  .labs{
    display:grid;grid-template-columns:repeat(auto-fill,minmax(206px,1fr));gap:22px 18px;
    padding:clamp(14px,2.2vw,24px);border:1px solid rgba(242,233,214,.075);
@@ -202,6 +211,12 @@
  }
  .lab:hover .lab__shot,.lab:focus-visible .lab__shot{border-color:rgba(232,73,15,.5)}
  .lab:hover .lab__shot img,.lab:focus-visible .lab__shot img{transform:scale(1.04);filter:brightness(1.04)}
+ .lab__tag{
+   position:absolute;top:8px;left:8px;z-index:2;display:inline-flex;align-items:center;gap:6px;
+   padding:4px 8px;background:rgba(6,5,3,.76);border:1px solid rgba(242,233,214,.22);
+   font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--bone);
+ }
+ .lab__tag::before{content:'';width:5px;height:5px;background:var(--blaze)}
  .lab__n{
    display:block;font-family:Archivo,sans-serif;font-weight:800;font-stretch:106%;
    font-variation-settings:"wdth" 106,"wght" 800;font-size:14px;line-height:1.1;
@@ -238,6 +253,12 @@
    border:1px solid var(--rule);box-shadow:0 18px 44px rgba(0,0,0,.55);
  }
  .labview__stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+ .labview__shot{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover}
+ .labview__nx{
+   position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;padding:11px 14px;
+   font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-align:center;
+   background:linear-gradient(0deg,rgba(6,5,3,.88),rgba(6,5,3,0));
+ }
  .labview__u{
    text-align:center;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
    color:var(--dim);opacity:.7;margin-top:12px;overflow-wrap:anywhere;
@@ -287,7 +308,7 @@
       <span class="link__in"><span class="link__t" data-split>GitHub</span><span class="link__x" aria-hidden="true"></span></span>
     </a>
     <a class="link" href="#lab">
-      <span class="link__in"><span class="link__t" data-split>Prompts</span></span>
+      <span class="link__in"><span class="link__t" data-split>Projects</span></span>
     </a>
     <a class="link" href="https://flowrouter.work" target="_blank" rel="noopener">
       <span class="link__in"><span class="link__t" data-split>FlowRouter</span><span class="link__x" aria-hidden="true"></span></span>
@@ -331,15 +352,19 @@
 
 <main class="view view--gal" id="v-lab">
   <a class="back" href="#"><i aria-hidden="true"></i>back</a>
-  <h2 class="page">Prompts</h2>
-  <p class="page-sub">auto-synced from github · click a card to preview</p>
+  <h2 class="page">Projects</h2>
+  <p class="page-sub">live sites and auto-synced previews · click a card</p>
   <div class="labs" id="lablist"></div>
   <section class="labview" id="labpanel" hidden aria-label="Project preview">
     <div class="labview__bar">
       <span class="labview__nm" id="labname"></span>
       <button class="labview__x" id="labclose" type="button">close <i aria-hidden="true"></i></button>
     </div>
-    <div class="labview__stage"><iframe id="labframe" title="Live preview" loading="lazy" referrerpolicy="no-referrer"></iframe></div>
+    <div class="labview__stage">
+      <iframe id="labframe" title="Live preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+      <img class="labview__shot" id="labshot" alt="" width="640" height="400" hidden>
+      <p class="labview__nx" id="labnx" hidden>site doesn't allow embedding · showing a captured preview</p>
+    </div>
     <p class="labview__u" id="laburl"></p>
     <a class="labview__open" id="labopen" href="#" target="_blank" rel="noopener">open full page</a>
   </section>
@@ -380,9 +405,9 @@
   }
   addEventListener('hashchange', route);
 
-  /* ── 3. prompts gallery: instant fallback list, live list when idle ───── */
+  /* ── 3. projects gallery: instant fallback list, live list when idle ───── */
   const GH_USER = 'Foshowithit';
-  const SKIP = new Set(['adamn.info']);
+  const SKIP = new Set(['adamn.info', 'bryces-patios']);
   const NAMES = {
     'village-above-the-clouds': 'Village',
     'village-above-the-clouds-omp': 'Village OMP',
@@ -391,7 +416,20 @@
     'flowrouter-promo': 'FlowRouter Promo',
   };
   const ACRONYMS = new Set(['os', 'omp', 'ai', 'ml', 'ui', 'api', 'gpu', 'rocm', 'rdna', 'v2', '2d', '3d', 'ip', 'xr']);
-  const FALLBACK = [
+  // Hand-picked properties that are not GitHub Pages repos — real domains, so
+  // the API pass below can never find them. `s` is the thumbnail slug
+  // (thumbs/<s>.webp); `nx` marks a site that refuses framing, previewed from
+  // its captured shot instead of a live iframe. tools/shoot-thumbs.sh captures
+  // the same domains (CURATED) — keep the two lists in sync.
+  const SITES = [
+    { n: 'Optimized Workflow', u: 'https://optimizedworkflow.dev/', s: 'optimizedworkflow', tag: 'live', nx: true,
+      d: 'AI automation, private AI infrastructure and GPU inference' },
+    { n: 'BearingBrain', u: 'https://bearingbrain.com/', s: 'bearingbrain', tag: 'live',
+      d: 'Bearing cross-reference, specs and pricing — 238,000 parts' },
+    { n: "Bryce's Patios", u: 'https://brycespatios.work/', s: 'brycespatios', tag: 'live',
+      d: 'Stone patio installation in Mansfield, MA' },
+  ];
+  const FALLBACK = SITES.concat([
     { n: 'Sacred Heart', u: 'https://foshowithit.github.io/sacred-heart/' },
     { n: 'Village', u: 'https://foshowithit.github.io/village-above-the-clouds/' },
     { n: 'Village OMP', u: 'https://foshowithit.github.io/village-above-the-clouds-omp/' },
@@ -404,21 +442,25 @@
     { n: 'Hog Crankers', u: 'https://foshowithit.github.io/hog-crankers/' },
     { n: 'Industria', u: 'https://foshowithit.github.io/industria/' },
     { n: 'R9700 Build', u: 'https://foshowithit.github.io/r9700-build/' },
-  ];
+  ]);
   const pretty = (s) => NAMES[s] || s.split('-').map((w) =>
     ACRONYMS.has(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   const slugOf = (u) => u.replace(/\/+$/, '').split('/').pop();
-  const CACHE_KEY = 'adamn.prompts.v2';
+  const thumbOf = (l) => l.s || slugOf(l.u);   // pinned domains carry an explicit slug
+  const CACHE_KEY = 'adamn.projects.v1';   // v2 kept returning visitors on a repo-only list
   const CACHE_MS = 30 * 60 * 1000;
 
   let LABS = FALLBACK.slice();
   const list = $('lablist'), panel = $('labpanel'), labFrame = $('labframe'),
+    labShot = $('labshot'), nxEl = $('labnx'),
     nameEl = $('labname'), urlEl = $('laburl'), openEl = $('labopen');
 
   const cardHTML = (l, i) =>
     '<button class="lab" type="button" data-i="' + i + '" aria-label="Preview ' + esc(l.n) + '">' +
-      '<span class="lab__shot"><span class="lab__fb">' + esc(l.n) + '</span>' +
-      '<img src="thumbs/' + esc(slugOf(l.u)) + '.webp" alt="" loading="lazy" decoding="async" width="640" height="400">' +
+      '<span class="lab__shot">' +
+      (l.tag ? '<span class="lab__tag">' + esc(l.tag) + '</span>' : '') +
+      '<span class="lab__fb">' + esc(l.n) + '</span>' +
+      '<img src="thumbs/' + esc(thumbOf(l)) + '.webp" alt="" loading="lazy" decoding="async" width="640" height="400">' +
       '</span>' +
       '<span class="lab__n">' + esc(l.n) + '</span>' +
       (l.d ? '<span class="lab__d">' + esc(l.d) + '</span>' : '') +
@@ -429,6 +471,9 @@
     if (e.target.tagName === 'IMG') e.target.remove();
   }, true);
 
+  // Same for the stage: a pinned site whose capture is absent keeps the note readable.
+  labShot.addEventListener('error', () => { labShot.hidden = true; });
+
   function renderLabs() {
     list.innerHTML = LABS.map(cardHTML).join('');
   }
@@ -438,13 +483,27 @@
     nameEl.textContent = l.n;
     urlEl.textContent = l.u;
     openEl.href = l.u;
-    if (labFrame.getAttribute('src') !== l.u) labFrame.src = l.u;
+    if (l.nx) {
+      // Refuses framing: show the captured shot instead of a blank iframe.
+      labFrame.removeAttribute('src');
+      labShot.src = 'thumbs/' + thumbOf(l) + '.webp';
+      labShot.hidden = false;
+      nxEl.hidden = false;
+    } else {
+      labShot.hidden = true;
+      labShot.removeAttribute('src');
+      nxEl.hidden = true;
+      if (labFrame.getAttribute('src') !== l.u) labFrame.src = l.u;
+    }
     panel.hidden = false;
     [...list.children].forEach((c, j) => c.setAttribute('aria-current', j === i ? 'true' : 'false'));
   }
   function closeLab() {
     panel.hidden = true;
     labFrame.removeAttribute('src');   // tear the page down, don't just hide it
+    labShot.hidden = true;
+    labShot.removeAttribute('src');
+    nxEl.hidden = true;
     [...list.children].forEach((c) => c.setAttribute('aria-current', 'false'));
   }
   list.addEventListener('click', (e) => {
@@ -473,9 +532,9 @@
         .sort((a, b) => b.created_at.localeCompare(a.created_at))
         .map((x) => ({ n: pretty(x.name), u: 'https://' + GH_USER.toLowerCase() + '.github.io/' + x.name + '/', d: x.description || '' }));
       if (next.length) {
-        LABS = next;
+        LABS = SITES.concat(next);   // hand-picked properties first
         renderLabs();
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d: next })); } catch (e) {}
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d: LABS })); } catch (e) {}
       }
     } finally {
       clearTimeout(timer);

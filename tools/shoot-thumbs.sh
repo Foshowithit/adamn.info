@@ -7,6 +7,10 @@
 # Asks the GitHub API which repos have Pages enabled, so a newly shipped page is
 # picked up automatically. Writes thumbs/<repo>.webp (640x400).
 #
+# Also captures the hand-picked real domains in CURATED below (bearingbrain.com
+# and friends), which the API pass can never find — the account's non-Pages
+# properties. Keep CURATED in sync with the SITES array in index.html.
+#
 # These are real WebGL pages. Use ANGLE/Metal so headless Chrome gets the actual
 # Apple GPU — with the software rasteriser (--use-angle=swiftshader) some scenes
 # never draw at all and you get a black card. Metal is also far faster.
@@ -51,16 +55,17 @@ for r in json.load(sys.stdin):
 if [[ -z "$SLUGS" ]]; then echo "!! GitHub API returned nothing (rate limit?)"; exit 1; fi
 
 total=0; shot=0; skipped=0; failed=0; blanked=0
-for slug in $SLUGS; do
-  total=$((total+1))
-  dest="$OUT/$slug.webp"
-  if [[ -f "$dest" && $FORCE -eq 0 ]]; then skipped=$((skipped+1)); continue; fi
+# macOS ships bash 3.2 — no ${VAR,,}, so lowercase the long way
+host=$(printf '%s' "$GH_USER" | tr 'A-Z' 'a-z')
 
-  # macOS ships bash 3.2 — no ${VAR,,}, so lowercase the long way
-  host=$(printf '%s' "$GH_USER" | tr 'A-Z' 'a-z')
-  url="https://$host.github.io/$slug/"
-  profile="/tmp/thumbshot-$slug"
-  raw="/tmp/thumbshot-$slug.png"
+shoot() { # shoot <slug> <url>
+  local slug="$1" url="$2"
+  total=$((total+1))
+  local dest="$OUT/$slug.webp"
+  if [[ -f "$dest" && $FORCE -eq 0 ]]; then skipped=$((skipped+1)); return; fi
+
+  local profile="/tmp/thumbshot-$slug"
+  local raw="/tmp/thumbshot-$slug.png"
   rm -rf "$profile" "$raw"
 
   printf "  %-32s " "$slug"
@@ -73,8 +78,8 @@ for slug in $SLUGS; do
   # Blank gate. A page that needs a click to start (video players, "tap to
   # begin" overlays) screenshots as a flat frame, and a scene the renderer
   # can't draw comes out pure black — both are worse than no thumbnail, because
-  # the site would show a black card. Reject and let the page fall back to
-  # GitHub's auto-generated repo card.
+  # the site would show a black card. Reject and let the card fall back to the
+  # branded tile.
   # Calibration on this account's pages: blank frames sd ~0.018; a page whose
   # canvas never drew had mean 0.009 while the next-darkest real scene sat at
   # 0.054. Hence the two thresholds.
@@ -87,10 +92,10 @@ for slug in $SLUGS; do
     awk -v a="$sd"   -v b="$MIN_SD"   'BEGIN{exit !(a < b)}' && reason="flat (sd $sd)"
     awk -v a="$mean" -v b="$MIN_MEAN" 'BEGIN{exit !(a < b)}' && reason="black (mean $mean)"
     if [[ -n "$reason" ]]; then
-      printf "REJECT %s - will use GitHub's card\n" "$reason"
+      printf "REJECT %s - falling back to a card\n" "$reason"
       blanked=$((blanked+1))
       rm -rf "$profile" "$raw"
-      continue
+      return
     fi
   fi
 
@@ -102,10 +107,18 @@ for slug in $SLUGS; do
     failed=$((failed+1))
   fi
   rm -rf "$profile" "$raw"
-done
+}
+
+for slug in $SLUGS; do shoot "$slug" "https://$host.github.io/$slug/"; done
+
+# Curated real-domain properties: not GitHub Pages, so the API pass above can
+# never find them. host:slug — the slug must match the `s` field of the SITES
+# array in index.html, and thumbs/<slug>.webp is what that card loads.
+CURATED="optimizedworkflow.dev:optimizedworkflow bearingbrain.com:bearingbrain brycespatios.work:brycespatios"
+for pair in $CURATED; do shoot "${pair##*:}" "https://${pair%%:*}/"; done
 
 echo
 echo "captured $shot · already had $skipped · blank $blanked · failed $failed · $total total"
-[[ $blanked -gt 0 ]] && echo "blank ones will show GitHub's repo card instead - capture those by hand if you want a real shot"
+[[ $blanked -gt 0 ]] && echo "blank ones show the branded tile instead - capture those by hand if you want a real shot"
 [[ $failed -gt 0 ]] && echo "re-run to retry just the failures"
 exit 0
