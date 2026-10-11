@@ -180,7 +180,7 @@
  .doc:hover img,.doc:focus-visible img{filter:brightness(1.02) contrast(1.02)}
  .doc:hover .doc__t,.doc:focus-visible .doc__t{color:var(--blaze)}
 
- /* ── projects gallery ────────────────────────────────────────────────────── */
+ /* ── card galleries: Work (real sites) + Prompts (repos) ─────────────────── */
  .labs{
    display:grid;grid-template-columns:repeat(auto-fill,minmax(206px,1fr));gap:22px 18px;
    padding:clamp(14px,2.2vw,24px);border:1px solid rgba(242,233,214,.075);
@@ -307,8 +307,11 @@
     <a class="link" href="https://github.com/Foshowithit" target="_blank" rel="noopener">
       <span class="link__in"><span class="link__t" data-split>GitHub</span><span class="link__x" aria-hidden="true"></span></span>
     </a>
-    <a class="link" href="#lab">
-      <span class="link__in"><span class="link__t" data-split>Projects</span></span>
+    <a class="link" href="#work">
+      <span class="link__in"><span class="link__t" data-split>Work</span></span>
+    </a>
+    <a class="link" href="#prompts">
+      <span class="link__in"><span class="link__t" data-split>Prompts</span></span>
     </a>
     <a class="link" href="https://flowrouter.work" target="_blank" rel="noopener">
       <span class="link__in"><span class="link__t" data-split>FlowRouter</span><span class="link__x" aria-hidden="true"></span></span>
@@ -350,10 +353,30 @@
   </div>
 </main>
 
-<main class="view view--gal" id="v-lab">
+<main class="view view--gal" id="v-work">
   <a class="back" href="#"><i aria-hidden="true"></i>back</a>
-  <h2 class="page">Projects</h2>
-  <p class="page-sub">live sites and auto-synced previews · click a card</p>
+  <h2 class="page">Work</h2>
+  <p class="page-sub">live sites · click a card</p>
+  <div class="labs" id="worklist"></div>
+  <section class="labview" id="workpanel" hidden aria-label="Site preview">
+    <div class="labview__bar">
+      <span class="labview__nm" id="workname"></span>
+      <button class="labview__x" id="workclose" type="button">close <i aria-hidden="true"></i></button>
+    </div>
+    <div class="labview__stage">
+      <iframe id="workframe" title="Live preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+      <img class="labview__shot" id="workshot" alt="" width="640" height="400" hidden>
+      <p class="labview__nx" id="worknx" hidden>site doesn't allow embedding · showing a captured preview</p>
+    </div>
+    <p class="labview__u" id="workurl"></p>
+    <a class="labview__open" id="workopen" href="#" target="_blank" rel="noopener">open full page</a>
+  </section>
+</main>
+
+<main class="view view--gal" id="v-prompts">
+  <a class="back" href="#"><i aria-hidden="true"></i>back</a>
+  <h2 class="page">Prompts</h2>
+  <p class="page-sub">auto-synced from github · click a card to preview</p>
   <div class="labs" id="lablist"></div>
   <section class="labview" id="labpanel" hidden aria-label="Project preview">
     <div class="labview__bar">
@@ -395,17 +418,19 @@
   });
 
   /* ── 2. routing ───────────────────────────────────────────────────────── */
-  const VIEWS = { home: $('v-home'), certs: $('v-certs'), lab: $('v-lab') };
+  const VIEWS = { home: $('v-home'), certs: $('v-certs'), work: $('v-work'), prompts: $('v-prompts') };
   let current = 'home';
   function route() {
     const h = location.hash;
-    current = h === '#certs' ? 'certs' : h === '#lab' ? 'lab' : 'home';
+    current = h === '#certs' ? 'certs' : h === '#work' ? 'work'
+      : h === '#prompts' || h === '#lab' ? 'prompts'   // #lab: older bookmarks
+      : 'home';
     for (const k in VIEWS) VIEWS[k].classList.toggle('on', k === current);
     scrollTo(0, 0);
   }
   addEventListener('hashchange', route);
 
-  /* ── 3. projects gallery: instant fallback list, live list when idle ───── */
+  /* ── 3. card galleries: instant fallback list, live list when idle ─────── */
   const GH_USER = 'Foshowithit';
   const SKIP = new Set(['adamn.info', 'bryces-patios']);
   const NAMES = {
@@ -416,11 +441,11 @@
     'flowrouter-promo': 'FlowRouter Promo',
   };
   const ACRONYMS = new Set(['os', 'omp', 'ai', 'ml', 'ui', 'api', 'gpu', 'rocm', 'rdna', 'v2', '2d', '3d', 'ip', 'xr']);
-  // Hand-picked properties that are not GitHub Pages repos — real domains, so
-  // the API pass below can never find them. `s` is the thumbnail slug
-  // (thumbs/<s>.webp); `nx` marks a site that refuses framing, previewed from
-  // its captured shot instead of a live iframe. tools/shoot-thumbs.sh captures
-  // the same domains (CURATED) — keep the two lists in sync.
+  // The Work gallery: real properties, not GitHub Pages repos — real domains,
+  // so the API pass below can never find them and they are never merged into it.
+  // `s` is the thumbnail slug (thumbs/<s>.webp); `nx` marks a site that refuses
+  // framing, previewed from its captured shot instead of a live iframe.
+  // tools/shoot-thumbs.sh captures these same domains (CURATED) — keep in sync.
   const SITES = [
     { n: 'Optimized Workflow', u: 'https://optimizedworkflow.dev/', s: 'optimizedworkflow', tag: 'live', nx: true,
       d: 'AI automation, private AI infrastructure and GPU inference' },
@@ -429,7 +454,9 @@
     { n: "Bryce's Patios", u: 'https://brycespatios.work/', s: 'brycespatios', tag: 'live',
       d: 'Stone patio installation in Mansfield, MA' },
   ];
-  const FALLBACK = SITES.concat([
+  // The Prompts gallery's starting list — replaced by the live GitHub Pages list
+  // as soon as `discover()` answers. Never holds the Work properties above.
+  const FALLBACK = [
     { n: 'Sacred Heart', u: 'https://foshowithit.github.io/sacred-heart/' },
     { n: 'Village', u: 'https://foshowithit.github.io/village-above-the-clouds/' },
     { n: 'Village OMP', u: 'https://foshowithit.github.io/village-above-the-clouds-omp/' },
@@ -442,18 +469,15 @@
     { n: 'Hog Crankers', u: 'https://foshowithit.github.io/hog-crankers/' },
     { n: 'Industria', u: 'https://foshowithit.github.io/industria/' },
     { n: 'R9700 Build', u: 'https://foshowithit.github.io/r9700-build/' },
-  ]);
+  ];
   const pretty = (s) => NAMES[s] || s.split('-').map((w) =>
     ACRONYMS.has(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   const slugOf = (u) => u.replace(/\/+$/, '').split('/').pop();
   const thumbOf = (l) => l.s || slugOf(l.u);   // pinned domains carry an explicit slug
-  const CACHE_KEY = 'adamn.projects.v1';   // v2 kept returning visitors on a repo-only list
+  const CACHE_KEY = 'adamn.prompts.v2';   // caches the discovered repo list only
   const CACHE_MS = 30 * 60 * 1000;
 
   let LABS = FALLBACK.slice();
-  const list = $('lablist'), panel = $('labpanel'), labFrame = $('labframe'),
-    labShot = $('labshot'), nxEl = $('labnx'),
-    nameEl = $('labname'), urlEl = $('laburl'), openEl = $('labopen');
 
   const cardHTML = (l, i) =>
     '<button class="lab" type="button" data-i="' + i + '" aria-label="Preview ' + esc(l.n) + '">' +
@@ -466,51 +490,72 @@
       (l.d ? '<span class="lab__d">' + esc(l.d) + '</span>' : '') +
     '</button>';
 
-  // A repo with no capture yet 404s its <img>; drop it so the branded tile shows through.
-  list.addEventListener('error', (e) => {
-    if (e.target.tagName === 'IMG') e.target.remove();
-  }, true);
+  /* One preview panel per section. `source` is a function so the Prompts list can
+     swap in the discovered repos without rewiring anything here. */
+  function gallery(ids, source) {
+    const list = $(ids.list), panel = $(ids.panel), frame = $(ids.frame),
+      shot = $(ids.shot), nx = $(ids.nx),
+      nameEl = $(ids.name), urlEl = $(ids.url), openEl = $(ids.open);
 
-  // Same for the stage: a pinned site whose capture is absent keeps the note readable.
-  labShot.addEventListener('error', () => { labShot.hidden = true; });
+    // A repo with no capture yet 404s its <img>; drop it so the branded tile shows through.
+    list.addEventListener('error', (e) => {
+      if (e.target.tagName === 'IMG') e.target.remove();
+    }, true);
 
-  function renderLabs() {
-    list.innerHTML = LABS.map(cardHTML).join('');
-  }
-  function openLab(i) {
-    const l = LABS[i];
-    if (!l) return;
-    nameEl.textContent = l.n;
-    urlEl.textContent = l.u;
-    openEl.href = l.u;
-    if (l.nx) {
-      // Refuses framing: show the captured shot instead of a blank iframe.
-      labFrame.removeAttribute('src');
-      labShot.src = 'thumbs/' + thumbOf(l) + '.webp';
-      labShot.hidden = false;
-      nxEl.hidden = false;
-    } else {
-      labShot.hidden = true;
-      labShot.removeAttribute('src');
-      nxEl.hidden = true;
-      if (labFrame.getAttribute('src') !== l.u) labFrame.src = l.u;
+    // Same for the stage: a site whose capture is absent keeps the note readable.
+    shot.addEventListener('error', () => { shot.hidden = true; });
+
+    const mark = (i) => [...list.children].forEach(
+      (c, j) => c.setAttribute('aria-current', j === i ? 'true' : 'false'));
+
+    function render() {
+      list.innerHTML = source().map(cardHTML).join('');
     }
-    panel.hidden = false;
-    [...list.children].forEach((c, j) => c.setAttribute('aria-current', j === i ? 'true' : 'false'));
+    function open(i) {
+      const l = source()[i];
+      if (!l) return;
+      nameEl.textContent = l.n;
+      urlEl.textContent = l.u;
+      openEl.href = l.u;
+      if (l.nx) {
+        // Refuses framing: show the captured shot instead of a blank iframe.
+        frame.removeAttribute('src');
+        shot.src = 'thumbs/' + thumbOf(l) + '.webp';
+        shot.hidden = false;
+        nx.hidden = false;
+      } else {
+        shot.hidden = true;
+        shot.removeAttribute('src');
+        nx.hidden = true;
+        if (frame.getAttribute('src') !== l.u) frame.src = l.u;
+      }
+      panel.hidden = false;
+      mark(i);
+    }
+    function close() {
+      panel.hidden = true;
+      frame.removeAttribute('src');   // tear the page down, don't just hide it
+      shot.hidden = true;
+      shot.removeAttribute('src');
+      nx.hidden = true;
+      mark(-1);
+    }
+    list.addEventListener('click', (e) => {
+      const b = e.target.closest('.lab');
+      if (b) open(+b.dataset.i);
+    });
+    $(ids.close).addEventListener('click', close);
+    return { render };
   }
-  function closeLab() {
-    panel.hidden = true;
-    labFrame.removeAttribute('src');   // tear the page down, don't just hide it
-    labShot.hidden = true;
-    labShot.removeAttribute('src');
-    nxEl.hidden = true;
-    [...list.children].forEach((c) => c.setAttribute('aria-current', 'false'));
-  }
-  list.addEventListener('click', (e) => {
-    const b = e.target.closest('.lab');
-    if (b) openLab(+b.dataset.i);
-  });
-  $('labclose').addEventListener('click', closeLab);
+
+  const work = gallery(
+    { list: 'worklist', panel: 'workpanel', frame: 'workframe', shot: 'workshot', nx: 'worknx',
+      name: 'workname', url: 'workurl', open: 'workopen', close: 'workclose' },
+    () => SITES);
+  const prompts = gallery(
+    { list: 'lablist', panel: 'labpanel', frame: 'labframe', shot: 'labshot', nx: 'labnx',
+      name: 'labname', url: 'laburl', open: 'labopen', close: 'labclose' },
+    () => LABS);
 
   function readCache() {
     try {
@@ -532,9 +577,9 @@
         .sort((a, b) => b.created_at.localeCompare(a.created_at))
         .map((x) => ({ n: pretty(x.name), u: 'https://' + GH_USER.toLowerCase() + '.github.io/' + x.name + '/', d: x.description || '' }));
       if (next.length) {
-        LABS = SITES.concat(next);   // hand-picked properties first
-        renderLabs();
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d: LABS })); } catch (e) {}
+        LABS = next;
+        prompts.render();
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d: next })); } catch (e) {}
       }
     } finally {
       clearTimeout(timer);
@@ -543,7 +588,8 @@
 
   const cached = readCache();
   if (cached) LABS = cached;
-  renderLabs();
+  work.render();
+  prompts.render();
   route();
 
   /* ── 4. background fluid ──────────────────────────────────────────────── */
