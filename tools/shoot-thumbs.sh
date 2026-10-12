@@ -114,7 +114,7 @@ for slug in $SLUGS; do shoot "$slug" "https://$host.github.io/$slug/"; done
 # Curated real-domain properties: not GitHub Pages, so the API pass above can
 # never find them. host:slug — the slug must match the `s` field of the SITES
 # array in index.html, and thumbs/<slug>.webp is what that card loads.
-CURATED="optimizedworkflow.dev:optimizedworkflow bearingbrain.com:bearingbrain brycespatios.work:brycespatios"
+CURATED="optimizedworkflow.dev:optimizedworkflow bearingbrain.com:bearingbrain brycespatios.work:brycespatios research.optimizedworkflow.dev:signalboard-research app.optimizedworkflow.dev:flow flowrouter.work:flowrouter chow-website-serious.vercel.app:chow chow-website.vercel.app:hotchowdere partsnap.vercel.app:partsnap perfectdiet.vercel.app:perfectdiet henryweb.vercel.app:henry tower-talent.vercel.app:towertalent output-jet-rho.vercel.app:safety-guild crownexterior.xyz:crownexterior bearingconsultant.vercel.app:bearingconsultant ssac-mike-juneau.vercel.app:ssac supercar-exchange.vercel.app:supercar-exchange coach-app-roan.vercel.app:coach cse-ai-website.vercel.app:cse simple-task-raiders.vercel.app:simple-task-raiders v0-storefront-w-nano-banana-ai-s-murex-psi.vercel.app:sanctum-curios nineveh90.vercel.app:nineveh90 templemarks.vercel.app:templemarks whfraudtf.xyz:whfraudtf fapcoinfront.vercel.app:fapcoin checkprice-website.vercel.app:checkprice trencher-neon.vercel.app:trencher fapterminal-site.vercel.app:fapterminal bag-watcher-ai.vercel.app:bag-watcher rico-website.vercel.app:morgan-freebase"
 for pair in $CURATED; do shoot "${pair##*:}" "https://${pair%%:*}/"; done
 
 echo
