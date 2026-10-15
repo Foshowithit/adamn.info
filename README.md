@@ -6,8 +6,9 @@ Telecom construction / tower foreman personal page. Static HTML/CSS/JS, no build
 
 ```sh
 cd ~/projects/personal-site
-python3 -m http.server 8787
-# open http://localhost:8787
+python3 -m http.server 8891
+# open http://127.0.0.1:8891
+# (8787 is already taken by an unrelated server on this Mac)
 ```
 
 ## Fill in the placeholders
@@ -61,3 +62,4 @@ assets/photos/      photo drop folder
 - Content is grounded in what Adam stated: HS 2016 → residential construction → lineman school → tower climber → Class A CDL → foreman → telecom site builds (shelters, cabinets, RF, fiber, steel, conduit, 4-man crews). No invented employers, dates, or certifications.
 - `[YEAR]` tokens must be filled from real dates only.
 - Print stylesheet inverts to light theme for PDF export.
+- Social preview: `assets/og.jpg` (1200×630). Recapture after filling placeholders — resize with `sips -z 630 1200 assets/og.jpg` if the screenshot isn't exact. On deploy, change `og:image`/`twitter:image` from the relative path to the absolute URL (`https://<domain>/assets/og.jpg`) — some scrapers (LinkedIn, Slack) require absolute URLs.
