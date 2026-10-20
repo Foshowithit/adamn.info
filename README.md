@@ -71,19 +71,23 @@ To replace a work photograph, update its `.shot a` URL, `img` URL, and alt text.
 
 ## Redesign verification
 
-Inspected the local page in a real browser at five viewports after the final edits. The images load eagerly with `decoding="async"` and no `loading="lazy"`, and each capture was preceded by a scroll to the bottom and back, so the numbers below describe a fully painted page rather than a mid-stitch full-page screenshot.
+Inspected the local page in a real browser at five viewports after the final edits. The images load eagerly with `decoding="async"` and no `loading="lazy"`; each capture was preceded by a scroll to the bottom and back, and every shot was measured with `getBoundingClientRect()`, so the numbers below describe a fully painted page rather than a mid-stitch full-page screenshot.
 
-| Viewport | Document height | Work areas | Work columns | Collage height | Broken images | Horizontal overflow |
-|---|---|---|---|---|---|---|
-| 1440×1000 | 3031 | 14 | 2 | 1420 | 0 of 10 | none |
-| 1100×900 | 2589 | 14 | 2 | 1085 | 0 of 10 | none |
-| 820×900 | 2647 | 14 | 2 | 829 | 0 of 10 | none |
-| 390×844 | 4661 | 14 | 1 | 2426 | 0 of 10 | none |
-| 320×844 | 4553 | 14 | 1 | 2118 | 0 of 10 | none |
+| Viewport | Document height | Work areas | Work columns | Collage height | Lowest shot | Broken images | Horizontal overflow |
+|---|---|---|---|---|---|---|---|
+| 1440×1000 | 2889 | 14 | 2 | 1120 | 97.05% | 0 of 10 | none |
+| 1100×900 | 2490 | 14 | 2 | 856 | 97.20% | 0 of 10 | none |
+| 820×900 | 2957 | 14 | 1 | 654 | 98.03% | 0 of 10 | none |
+| 390×844 | 4589 | 14 | 1 | 2387 | 98.69% | 0 of 10 | none |
+| 320×844 | 4385 | 14 | 1 | 2077 | 98.48% | 0 of 10 | none |
 
-The collage is sized with `aspect-ratio: 1264 / 1420` on `.workscape` instead of a fixed pixel height, so the scattered shots scale with the content column; the lowest shot sat at 95–98% of the container at every viewport, so no viewport leaves a dead band under the photos. The nine work photos keep their individual rotations, absolute scatter positions on desktop, and staggered negative-margin stack on mobile; every one measured a non-zero painted box and links to its full-size file. Each `aspect-ratio` sits on the shot's `<picture>` element rather than its `<a>`: an aspect-ratio anchor with a `height: 100%` image leaves the image box at zero height in some engines, which paints the frame as blank paper. Sizing the `<picture>` and letting the image fill it keeps the collage stable at every viewport.
+Work columns reports the two-column list rule; the two single-item groups collapse to one column by design (`:has(> li:only-child)`). "Lowest shot" is the bottom edge of the lowest collage photo as a percentage of the `.workscape` box, so no viewport leaves a dead band under the photos.
 
-Note for future verification: a Playwright **full-page** screenshot can drop off-screen images mid-stitch and render them as blank paper-coloured boxes. That is a capture artifact, not a layout bug. Either scroll the page once and force decoding before capture, or confirm with a viewport screenshot scrolled to the collage plus `getBoundingClientRect()` on each `.shot a` and `.shot img`.
+In the 601–1024px band the collage is at its densest and the career note lands on top of the photos, so the note becomes an opaque paper card (own background, 18px padding, 12px paper halo) anchored `bottom: 5%` of the workscape box. Measured note-to-collage clearance is −20 to −39px (inside the box) at 601/700/820/1024, so it can never spill into the section rule; text reads over the cabinet photo at 601 where the pile is tightest.
+
+The collage is sized with `aspect-ratio: 1264 / 1120` on `.workscape` instead of a fixed pixel height, so the scattered shots scale with the content column. The ratio was retuned from `1264 / 1420` because the taller box left roughly 220px of empty paper below the last photo at 1440; the composition above now ends flush at the section rule. The nine work photos keep their individual rotations, absolute scatter positions on desktop, and staggered negative-margin stack on mobile; every one measured a non-zero painted box and links to its full-size file. Each `aspect-ratio` sits on the shot's `<picture>` element rather than its `<a>`: an aspect-ratio anchor with a `height: 100%` image leaves the image box at zero height in some engines, which paints the frame as blank paper. Sizing the `<picture>` and letting the image fill it keeps the collage stable at every viewport.
+
+Note for future verification: a Playwright **full-page** screenshot can drop off-screen images mid-stitch and render them as blank paper-coloured boxes. That is a capture artifact, not a layout bug, and scrolling the page to the bottom and back does **not** prevent it. What does: `await Promise.all([...document.images].map(i => i.decode().catch(() => null)))` before the full-page capture, which painted all ten photos in the same run where the undecoded capture showed six blank frames. For a plain check, take viewport screenshots scrolled through the collage plus `getBoundingClientRect()` on each `.shot a` and `.shot img`.
 
 ### Image and font weight
 
