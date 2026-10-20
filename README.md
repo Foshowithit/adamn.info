@@ -1,6 +1,6 @@
 # Personal site — Adam [LASTNAME]
 
-An editorial personal site for Adam [LASTNAME]: introduction, portrait, nine freeform work photos, and a 14-part record of field and technical experience. Static HTML and CSS; no JavaScript, package dependencies, external font requests, or build step. Geist is bundled locally under the SIL Open Font License. Nothing has been deployed.
+An editorial personal site for Adam [LASTNAME]: introduction, portrait, nine freeform work photos, and a 14-part record of field and technical experience. Static HTML and CSS; no JavaScript, package dependencies, external font requests, or build step. Archivo is bundled locally under the SIL Open Font License. Nothing has been deployed.
 
 ## Run locally
 
@@ -20,9 +20,9 @@ Keep `[LASTNAME]` and `[EMAIL]` until Adam supplies replacements. Replace all oc
 
 - The opening section pairs a large editorial headline and direct, trade-specific introduction with an offset portrait.
 - Nine work photographs remain a freeform composition: varied sizes, slight rotations, uneven spacing, and overlaps. They are not grouped, captioned, or ordered into a gallery.
-- A separate experience section lists all 14 areas of work in simple editorial rows; it does not organize or relabel the photographs.
+- A separate `What I actually do.` section groups all 14 areas of work under five plain-language headings in two flowing note columns; it is a list of what the work involves, not a résumé timeline, and it does not organize or relabel the photographs.
 - On narrow screens the collage remains staggered and irregular rather than becoming a uniform gallery grid. Every photo links to its untouched original; the displayed image crop does not alter the source.
-- Warm paper background, restrained rust accent, serif headline, and locally bundled Geist for interface text.
+- Warm paper background, restrained teal accent, heavy grotesque headline, and locally bundled Archivo for interface text.
 - No sticky navigation, menus, reveal animation, or JavaScript. Images load without JavaScript.
 - Keyboard focus styles and a skip link are included.
 - The stylesheet URL carries a version suffix to avoid stale browser caches. Change that suffix when publishing future CSS changes.
@@ -32,9 +32,8 @@ Keep `[LASTNAME]` and `[EMAIL]` until Adam supplies replacements. Replace all oc
 ```text
 index.html                introduction, freeform photographs, 14 experience areas, email links, social metadata
 css/style.css             responsive layout, focus and print styles
-assets/geist-*.woff2      subsetted local Geist regular and medium fonts (Latin + punctuation)
-assets/geist-*.ttf        same faces as TTF, kept as the `@font-face` fallback
-assets/geist-OFL.txt      font copyright and SIL Open Font License
+assets/archivo-normal.woff2  local Archivo variable font (weight 100-900), 34 KB
+assets/archivo-OFL.txt       font copyright and SIL Open Font License
 assets/favicon.svg        existing tower mark, unchanged
 assets/og.jpg             existing social preview, unchanged
 assets/og-card.html       existing social-card source, unchanged
@@ -72,22 +71,24 @@ To replace a work photograph, update its `.shot a` URL, `img` URL, and alt text.
 
 ## Redesign verification
 
-Inspected the local page in a real browser at three viewports, after the final edits.
+Inspected the local page in a real browser at five viewports after the final edits. Before each capture, lazy loading was turned off, every image decoded, and the page scrolled to the bottom once, so the numbers below describe a fully painted page rather than a mid-stitch full-page screenshot.
 
-| Viewport | Document | Experience areas | List columns | Horizontal overflow |
-|---|---|---|---|---|
-| 1440×1000 | 1440×3739 | 14 | two (387px + 388px) | none |
-| 390×844 | 390×6003 | 14 | one (348px) | none |
-| 320×844 | 320×5932 | 14 | one (288px) | none |
+| Viewport | Document height | Work areas | Work columns | Collage height | Broken images | Horizontal overflow |
+|---|---|---|---|---|---|---|
+| 1440×1000 | 3190 | 14 | 2 | 1420 | 0 of 10 | none |
+| 1100×900 | 2730 | 14 | 2 | 1085 | 0 of 10 | none |
+| 820×900 | 2635 | 14 | 2 | 829 | 0 of 10 | none |
+| 390×844 | 4661 | 14 | 1 | 2437 | 0 of 10 | none |
+| 320×844 | 4556 | 14 | 1 | 2129 | 0 of 10 | none |
 
-All ten image assets decoded (`naturalWidth > 0`, no broken images). The nine work photos keep their individual rotations, absolute scatter positions on desktop, and staggered negative-margin stack on mobile; each measured a non-zero painted box at 1440, 390, and 320 px, and each links to its full-size file.
+The collage is sized with `aspect-ratio: 1264 / 1420` on `.workscape` instead of a fixed pixel height, so the scattered shots scale with the content column; the lowest shot sat at 95–98% of the container at every viewport, so no viewport leaves a dead band under the photos. The nine work photos keep their individual rotations, absolute scatter positions on desktop, and staggered negative-margin stack on mobile; every one measured a non-zero painted box and links to its full-size file.
 
-Note for future verification: a Playwright **full-page** screenshot can drop off-screen images mid-stitch and render them as blank paper-coloured boxes. That is a capture artifact, not a layout bug. Confirm with a viewport screenshot scrolled to the collage plus `getBoundingClientRect()` on each `.shot a` and `.shot img`.
+Note for future verification: a Playwright **full-page** screenshot can drop off-screen images mid-stitch and render them as blank paper-coloured boxes. That is a capture artifact, not a layout bug. Either scroll the page once and force decoding before capture, or confirm with a viewport screenshot scrolled to the collage plus `getBoundingClientRect()` on each `.shot a` and `.shot img`.
 
 ### Image and font weight
 
 Each photo is served through `<picture>`: a `<source type="image/webp">` with a `480w` and a native-width candidate plus a `sizes` value matching its CSS width, and the untouched JPG as the `<img src>` fallback and the `a` link target. Measured on disk: the ten JPGs total 5.5 MB, the `-480` WebP set totals 468 KB, and the large variants total 976 KB.
 
-A cache-cold load at 1440×1000 requested **no JPGs at all** — ten WebP files, 450 KB combined, with `currentSrc` resolving to `-480.webp` at 1× and the server access log showing zero `.jpg` hits. The Geist faces are subsetted to Latin plus punctuation: 144 KB of TTF to 24 KB of WOFF2, with the TTF still listed second in `src` for older browsers.
+A cache-cold load at 1440×1000 requested **no JPGs at all** — ten WebP files, 450 KB combined, with `currentSrc` resolving to `-480.webp` at 1× and the server access log showing zero `.jpg` hits. The display and interface face is a single 34 KB Archivo variable WOFF2 (`font-weight: 100 900`), declared once with no TTF fallback file.
 
 The browser picks a candidate from `sizes`, not from the painted box, so keep those percentages in sync with the `.shot--*` widths if the collage is re-proportioned.
