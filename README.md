@@ -20,7 +20,7 @@ Keep `[LASTNAME]` and `[EMAIL]` until Adam supplies replacements. Replace all oc
 
 - The opening section pairs a large editorial headline and direct, trade-specific introduction with an offset portrait.
 - Nine work photographs remain a freeform composition: varied sizes, slight rotations, uneven spacing, and overlaps. They are not grouped, captioned, or ordered into a gallery.
-- A short first-person story (`Two halves of one job.`) sits directly under the hero, before the photographs: it states what a cell site is, that the trades work came first, and why software and site work are one job. It is three paragraphs of supplied biography plus framing; see the publishing boundaries below for which sentences are editorial.
+- A short first-person background section (`Background.`) sits directly under the hero, before the photographs: what a cell site is, and the residential-to-lineman-school-to-tower route since 2016. Two sentences, both from Adam's own account; no framing, no claims about his own standing. The crew and software facts are stated once in the hero and not repeated here.
 - A separate `What I take on.` section groups all 14 areas of work under five plain-language headings in two flowing note columns; it is a list of what the work involves, not a résumé timeline, and it does not organize or relabel the photographs.
 - On narrow screens the collage remains staggered and irregular rather than becoming a uniform gallery grid. Every photo links to its untouched original; the displayed image crop does not alter the source.
 - Warm paper background, restrained teal accent, heavy grotesque headline, and locally bundled Archivo for interface text.
