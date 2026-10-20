@@ -1,6 +1,6 @@
 # Personal site — Adam [LASTNAME]
 
-An editorial personal site for Adam [LASTNAME]: introduction, portrait, nine freeform work photos, and a 14-part record of field and technical experience. Static HTML and CSS; no JavaScript, package dependencies, external font requests, or build step. Archivo is bundled locally under the SIL Open Font License. Nothing has been deployed.
+An editorial personal site for Adam [LASTNAME]: introduction, portrait, a short first-person story, nine freeform work photos, and a 14-part record of field and technical experience. Static HTML and CSS; no JavaScript, package dependencies, external font requests, or build step. Archivo is bundled locally under the SIL Open Font License. Nothing has been deployed.
 
 ## Run locally
 
@@ -20,10 +20,11 @@ Keep `[LASTNAME]` and `[EMAIL]` until Adam supplies replacements. Replace all oc
 
 - The opening section pairs a large editorial headline and direct, trade-specific introduction with an offset portrait.
 - Nine work photographs remain a freeform composition: varied sizes, slight rotations, uneven spacing, and overlaps. They are not grouped, captioned, or ordered into a gallery.
-- A separate `What I actually do.` section groups all 14 areas of work under five plain-language headings in two flowing note columns; it is a list of what the work involves, not a résumé timeline, and it does not organize or relabel the photographs.
+- A short first-person story (`Two halves of one job.`) sits directly under the hero, before the photographs: it states what a cell site is, that the trades work came first, and why software and site work are one job. It is three paragraphs of supplied biography plus framing; see the publishing boundaries below for which sentences are editorial.
+- A separate `What I take on.` section groups all 14 areas of work under five plain-language headings in two flowing note columns; it is a list of what the work involves, not a résumé timeline, and it does not organize or relabel the photographs.
 - On narrow screens the collage remains staggered and irregular rather than becoming a uniform gallery grid. Every photo links to its untouched original; the displayed image crop does not alter the source.
 - Warm paper background, restrained teal accent, heavy grotesque headline, and locally bundled Archivo for interface text.
-- No sticky navigation, menus, reveal animation, or JavaScript. Images load without JavaScript.
+- No sticky navigation, menus, or JavaScript. Images load without JavaScript. The only motion is a CSS-only staggered entrance (`.shot`/`.career-note`/hero, under 1 s each) that is disabled under `prefers-reduced-motion` and in print.
 - Keyboard focus styles and a skip link are included.
 - The stylesheet URL carries a version suffix to avoid stale browser caches. Change that suffix when publishing future CSS changes.
 
@@ -71,23 +72,25 @@ To replace a work photograph, update its `.shot a` URL, `img` URL, and alt text.
 
 ## Redesign verification
 
-Inspected the local page in a real browser at five viewports after the final edits. The images load eagerly with `decoding="async"` and no `loading="lazy"`; each capture was preceded by a scroll to the bottom and back, and every shot was measured with `getBoundingClientRect()`, so the numbers below describe a fully painted page rather than a mid-stitch full-page screenshot.
+Inspected the local page in a real browser at five viewports after the final edits. Every capture was preceded by decoding all images (`Promise.all([...document.images].map(i => i.decode().catch(() => null)))`) and a wait past the staggered entrance animation, then each shot was measured with `getBoundingClientRect()`, so the numbers below describe a fully painted, settled page rather than a mid-stitch or mid-fade full-page screenshot.
 
-| Viewport | Document height | Work areas | Work columns | Collage height | Lowest shot | Broken images | Horizontal overflow |
+| Viewport | Document height | Work areas | List columns (5 groups) | Collage height | Lowest shot | Broken images | Horizontal overflow |
 |---|---|---|---|---|---|---|---|
-| 1440×1000 | 2889 | 14 | 2 | 1120 | 97.05% | 0 of 10 | none |
-| 1100×900 | 2490 | 14 | 2 | 856 | 97.20% | 0 of 10 | none |
-| 820×900 | 2957 | 14 | 1 | 654 | 98.03% | 0 of 10 | none |
-| 390×844 | 4589 | 14 | 1 | 2387 | 98.69% | 0 of 10 | none |
-| 320×844 | 4385 | 14 | 1 | 2077 | 98.48% | 0 of 10 | none |
+| 1440×1000 | 4090 | 14 | 2, 2, 2, 1, 1 | 1120 | 95.42% | 0 of 10 | none |
+| 1100×900 | 3524 | 14 | 2, 2, 2, 1, 1 | 856 | 95.45% | 0 of 10 | none |
+| 820×900 | 3834 | 14 | 1, 1, 1, 1, 1 | 654 | 95.48% | 0 of 10 | none |
+| 390×844 | 5859 | 14 | 1, 1, 1, 1, 1 | 2387 | 98.32% | 0 of 10 | none |
+| 320×844 | 5703 | 14 | 1, 1, 1, 1, 1 | 2077 | 98.04% | 0 of 10 | none |
 
-Work columns reports the two-column list rule; the two single-item groups collapse to one column by design (`:has(> li:only-child)`). "Lowest shot" is the bottom edge of the lowest collage photo as a percentage of the `.workscape` box, so no viewport leaves a dead band under the photos.
+List columns are the computed `column-count` of each group's `<ul>`; the two single-item groups collapse to one column by design (`:has(> li:only-child)`). "Lowest shot" is the bottom edge of the lowest collage photo as a percentage of the `.workscape` box, so no viewport leaves a dead band under the photos.
 
-In the 601–1024px band the collage is at its densest and the career note lands on top of the photos, so the note becomes an opaque paper card (own background, 18px padding, 12px paper halo) anchored `bottom: 5%` of the workscape box. Measured note-to-collage clearance is −20 to −39px (inside the box) at 601/700/820/1024, so it can never spill into the section rule; text reads over the cabinet photo at 601 where the pile is tightest.
+In the 601–1024px band the collage is at its densest and the career note lands on top of the photos, so the note becomes an opaque paper card (own background, 18px padding, 12px paper halo) anchored `bottom: 5%` of the workscape box. Measured note-to-collage clearance is −33px at 820 and −122px at 1100, both inside the box, so it can never spill into the section rule; text reads over the cabinet photo where the pile is tightest.
 
-The collage is sized with `aspect-ratio: 1264 / 1120` on `.workscape` instead of a fixed pixel height, so the scattered shots scale with the content column. The ratio was retuned from `1264 / 1420` because the taller box left roughly 220px of empty paper below the last photo at 1440; the composition above now ends flush at the section rule. The nine work photos keep their individual rotations, absolute scatter positions on desktop, and staggered negative-margin stack on mobile; every one measured a non-zero painted box and links to its full-size file. Each `aspect-ratio` sits on the shot's `<picture>` element rather than its `<a>`: an aspect-ratio anchor with a `height: 100%` image leaves the image box at zero height in some engines, which paints the frame as blank paper. Sizing the `<picture>` and letting the image fill it keeps the collage stable at every viewport.
+The collage is sized with `aspect-ratio: 1264 / 1120` on `.workscape` instead of a fixed pixel height, so the scattered shots scale with the content column. The nine work photos keep their individual rotations, absolute scatter positions on desktop, and staggered negative-margin stack on mobile; every one measured a non-zero painted box and links to its full-size file. Each `aspect-ratio` sits on the shot's `<picture>` element rather than its `<a>`: an aspect-ratio anchor with a `height: 100%` image leaves the image box at zero height in some engines, which paints the frame as a blank paper-coloured rectangle.
 
-Note for future verification: a Playwright **full-page** screenshot can drop off-screen images mid-stitch and render them as blank paper-coloured boxes. That is a capture artifact, not a layout bug, and scrolling the page to the bottom and back does **not** prevent it. What does: `await Promise.all([...document.images].map(i => i.decode().catch(() => null)))` before the full-page capture, which painted all ten photos in the same run where the undecoded capture showed six blank frames. For a plain check, take viewport screenshots scrolled through the collage plus `getBoundingClientRect()` on each `.shot a` and `.shot img`.
+Shot positions were retuned once by overlaying a 16×14 occupancy grid on the `.workscape` box: two empty bands (about 437×199 at top centre and 264×367 at mid right) read as holes rather than scatter, so `--radio` moved to the top band and `--pole` dropped into the right band. Photo coverage on that grid now measures 61% of the box, with the note's own slot left open by design.
+
+Note for future verification: a Playwright **full-page** screenshot can drop off-screen images mid-stitch and render them as blank paper-coloured boxes, and it can also catch the CSS entrance animation mid-fade, which makes text look pale. Both are capture artifacts, not layout bugs. Scrolling the page to the bottom and back does **not** fix the first one. What does: decode every image before the capture and wait about 1.5 s for the staggered animation to finish. For a plain check, take viewport screenshots scrolled through the collage plus `getBoundingClientRect()` on each `.shot a` and `.shot img`.
 
 ### Image and font weight
 

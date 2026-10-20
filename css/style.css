@@ -98,11 +98,11 @@ h1 { max-width: 620px; margin-top: 24px; font-size: clamp(46px, 6.4vw, 88px); li
 .shot--fiber picture { aspect-ratio: 4 / 5; }
 .shot--dc { top: 18%; left: 38%; z-index: 3; width: 26%; --rot: -1.4deg; }
 .shot--dc picture { aspect-ratio: 4 / 5; }
-.shot--pole { top: 17%; right: 4%; z-index: 5; width: 19%; --rot: 3.4deg; }
+.shot--pole { top: 29%; right: 2%; z-index: 5; width: 19%; --rot: 3.4deg; }
 .shot--pole picture { aspect-ratio: 3 / 4; }
 .shot--reaching { top: 34%; left: 2%; z-index: 3; width: 22%; --rot: -2.8deg; }
 .shot--reaching picture { aspect-ratio: 4 / 5; }
-.shot--radio { top: 47%; left: 25%; z-index: 4; width: 18%; --rot: -3deg; }
+.shot--radio { top: 0; left: 57%; z-index: 4; width: 17%; --rot: -3deg; }
 .shot--radio picture { aspect-ratio: 1 / 1; }
 .career-note { position: absolute; top: 63%; left: 45%; z-index: 6; width: min(24%, 340px); padding-top: 15px; border-top: 1px solid var(--ink); }
 .note-label { margin-bottom: 12px; color: var(--accent); }
@@ -112,6 +112,18 @@ h1 { max-width: 620px; margin-top: 24px; font-size: clamp(46px, 6.4vw, 88px); li
 .shot--roof { top: 66%; left: 1%; z-index: 2; width: 28%; --rot: -2.2deg; }
 .shot--roof picture { aspect-ratio: 1.1; }
 
+.lede + .lede { margin-top: 16px; }
+.contact-band { padding-top: clamp(40px, 4.4vw, 64px); border-top: 0; }
+.band-copy { max-width: 620px; margin-top: 26px; font-size: clamp(17px, 1.4vw, 19.5px); line-height: 1.6; color: var(--muted); }
+.band-link { margin-top: 24px; font: 620 clamp(22px, 2.4vw, 30px)/1.2 var(--display); letter-spacing: -.02em; }
+.band-link a { color: var(--ink); text-decoration: none; }
+.band-link a span { color: var(--accent); }
+.band-link a:hover { color: var(--accent); }
+.bio { padding: clamp(56px, 6vw, 88px) 0 clamp(48px, 5vw, 72px); border-top: var(--rule); }
+.bio-copy { max-width: 640px; margin-top: clamp(26px, 3vw, 40px); }
+.bio-copy p { margin: 0 0 18px; font-size: clamp(16.5px, 1.3vw, 18.5px); line-height: 1.66; color: var(--muted); }
+.bio-copy p:first-child { color: var(--ink); }
+.bio-copy p:last-child { margin-bottom: 0; }
 .work { padding: clamp(64px, 7vw, 96px) 0 clamp(56px, 6vw, 92px); border-top: var(--rule); }
 .work-title { max-width: 760px; font: 620 clamp(30px, 3.4vw, 44px)/1.1 var(--display); letter-spacing: -.03em; }
 .work-groups { counter-reset: work-row; margin-top: clamp(30px, 3.6vw, 50px); }
