@@ -3,14 +3,16 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("../assets/geist-regular.ttf") format("truetype");
+  src: url("../assets/geist-regular.woff2") format("woff2"),
+       url("../assets/geist-regular.ttf") format("truetype");
 }
 @font-face {
   font-family: Geist;
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("../assets/geist-medium.ttf") format("truetype");
+  src: url("../assets/geist-medium.woff2") format("woff2"),
+       url("../assets/geist-medium.ttf") format("truetype");
 }
 
 :root {
@@ -83,6 +85,7 @@ h1 em { color: var(--rust); font-weight: 400; }
 .credentials span { padding-inline: 9px; color: var(--rust); }
 .shot { position: absolute; z-index: 1; margin: 0; }
 .shot a { display: block; overflow: hidden; padding: 4px; background: var(--paper); box-shadow: 0 15px 35px rgb(39 33 24 / 13%); }
+.shot picture { display: block; height: 100%; }
 .shot img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.88) contrast(1.02); transition: transform .45s cubic-bezier(.2,.75,.25,1), filter .45s ease; }
 .shot a:hover img { transform: scale(1.035); filter: saturate(1); }
 .shot a:focus-visible { outline-offset: 8px; }

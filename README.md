@@ -30,14 +30,17 @@ Keep `[LASTNAME]` and `[EMAIL]` until Adam supplies replacements. Replace all oc
 ## Files
 
 ```text
-index.html            introduction, freeform photographs, 14 experience areas, email links, social metadata
-css/style.css         responsive layout, focus and print styles
-assets/geist-*.ttf     local Geist regular and medium fonts
-assets/geist-OFL.txt   font copyright and SIL Open Font License
-assets/favicon.svg    existing tower mark, unchanged
-assets/og.jpg         existing social preview, unchanged
-assets/og-card.html   existing social-card source, unchanged
-assets/photos/        ten original JPGs, unchanged
+index.html                introduction, freeform photographs, 14 experience areas, email links, social metadata
+css/style.css             responsive layout, focus and print styles
+assets/geist-*.woff2      subsetted local Geist regular and medium fonts (Latin + punctuation)
+assets/geist-*.ttf        same faces as TTF, kept as the `@font-face` fallback
+assets/geist-OFL.txt      font copyright and SIL Open Font License
+assets/favicon.svg        existing tower mark, unchanged
+assets/og.jpg             existing social preview, unchanged
+assets/og-card.html       existing social-card source, unchanged
+assets/photos/*.jpg       ten original JPGs, unchanged, still the full-size link targets
+assets/photos/*-480.webp  small WebP for narrow viewports and non-retina screens
+assets/photos/*-720/768/792/800.webp  native-width WebP for wide or 2× displays
 ```
 
 Anchors: `#about`, `#photos`, `#story`, `#experience`, `#contact`.
@@ -80,3 +83,11 @@ Inspected the local page in a real browser at three viewports, after the final e
 All ten image assets decoded (`naturalWidth > 0`, no broken images). The nine work photos keep their individual rotations, absolute scatter positions on desktop, and staggered negative-margin stack on mobile; each measured a non-zero painted box at 1440, 390, and 320 px, and each links to its full-size file.
 
 Note for future verification: a Playwright **full-page** screenshot can drop off-screen images mid-stitch and render them as blank paper-coloured boxes. That is a capture artifact, not a layout bug. Confirm with a viewport screenshot scrolled to the collage plus `getBoundingClientRect()` on each `.shot a` and `.shot img`.
+
+### Image and font weight
+
+Each photo is served through `<picture>`: a `<source type="image/webp">` with a `480w` and a native-width candidate plus a `sizes` value matching its CSS width, and the untouched JPG as the `<img src>` fallback and the `a` link target. Measured on disk: the ten JPGs total 5.5 MB, the `-480` WebP set totals 468 KB, and the large variants total 976 KB.
+
+A cache-cold load at 1440×1000 requested **no JPGs at all** — ten WebP files, 450 KB combined, with `currentSrc` resolving to `-480.webp` at 1× and the server access log showing zero `.jpg` hits. The Geist faces are subsetted to Latin plus punctuation: 144 KB of TTF to 24 KB of WOFF2, with the TTF still listed second in `src` for older browsers.
+
+The browser picks a candidate from `sizes`, not from the painted box, so keep those percentages in sync with the `.shot--*` widths if the collage is re-proportioned.
